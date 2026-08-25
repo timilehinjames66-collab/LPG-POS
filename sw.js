@@ -1,8 +1,9 @@
-const CACHE_NAME = "lpg-pos-v2";
+const CACHE_NAME = "lpg-pos-v8";
 const APP_FILES = [
     "./",
     "./index.html",
-    "./login.html",
+    "./index.htm",
+    "./dashboard.html",
     "./logout.html",
     "./customers.html",
     "./invoices.html",

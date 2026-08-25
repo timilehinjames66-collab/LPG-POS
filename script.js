@@ -525,7 +525,7 @@ function logoutUser() {
     localStorage.removeItem("currentCompanyUser");
 
     window.location.href =
-        "login.html";
+        "index.html";
 
 }
 
@@ -581,15 +581,15 @@ function handleLogin(event) {
     }));
     localStorage.removeItem("lpgPosLoggedIn");
     localStorage.removeItem("currentCompanyUser");
-    window.location.href = matchedUser.role === "driver" ? "logisticrecord.html" : "index.html";
+    window.location.href = matchedUser.role === "driver" ? "logisticrecord.html" : "dashboard.html";
 }
 
 function enforceLogin() {
-    const pageName = window.location.pathname.split("/").pop().toLowerCase();
-    const publicPages = ["", "login.html", "logout.html"];
+    const pageName = window.location.pathname.split("/").pop().toLowerCase() || "index.htm";
+    const publicPages = ["index.html", "index.htm", "logout.html"];
 
     if (!publicPages.includes(pageName) && !isLoggedIn()) {
-        window.location.replace("login.html");
+        window.location.replace("index.html");
         return;
     }
 
@@ -600,18 +600,18 @@ function enforceLogin() {
     }
 
     if (pageName === "logisticrecord.html" && isLoggedIn() && !isAdmin() && currentUser?.role !== "driver") {
-        window.location.replace("index.html");
+        window.location.replace("dashboard.html");
         return;
     }
 
-    if (pageName === "login.html" && isLoggedIn()) {
-        window.location.replace(currentUser?.role === "driver" ? "logisticrecord.html" : "index.html");
+    if (["index.html", "index.htm"].includes(pageName) && isLoggedIn()) {
+        window.location.replace(currentUser?.role === "driver" ? "logisticrecord.html" : "dashboard.html");
     }
 }
 
 function setupAutoSave() {
     const pageName = window.location.pathname.split("/").pop().toLowerCase() || "page";
-    if (pageName === "login.html" || pageName === "logout.html") return;
+    if (["index.html", "index.htm"].includes(pageName) || pageName === "logout.html") return;
 
     const storageKey = `lpgPosDraft:${pageName}`;
     const fields = Array.from(document.querySelectorAll("input[id], select[id], textarea[id]"))
@@ -708,6 +708,43 @@ function applyRolePermissions() {
     }, true);
 }
 
+function canModifySavedRow(row) {
+    return isAdmin() || row?.classList.contains("empty-row");
+}
+
+function addAdminCompanyColumns() {
+    if (!isAdmin()) return;
+
+    const updateTable = table => {
+        const rows = Array.from(table.tBodies[0]?.rows || []);
+        const companyRows = rows.filter(row => row.dataset.companyId);
+        if (companyRows.length === 0) return;
+
+        if (!table.dataset.companyColumn) {
+            const header = table.tHead?.rows[0];
+            if (!header) return;
+            const cell = document.createElement("th");
+            cell.textContent = "Company";
+            cell.className = "company-column";
+            header.prepend(cell);
+            table.dataset.companyColumn = "true";
+        }
+
+        rows.forEach(row => {
+            if (row.dataset.companyCell) return;
+            const cell = document.createElement("td");
+            cell.textContent = row.dataset.companyId || "";
+            cell.className = "company-column";
+            row.prepend(cell);
+            row.dataset.companyCell = "true";
+        });
+    };
+
+    const updateAllTables = () => document.querySelectorAll("table").forEach(updateTable);
+    updateAllTables();
+    new MutationObserver(updateAllTables).observe(document.body, { childList: true, subtree: true });
+}
+
 function renderDashboard() {
     const recentSalesBody = document.getElementById("recent-sales-body");
     if (!recentSalesBody) return;
@@ -717,6 +754,29 @@ function renderDashboard() {
     document.getElementById("customers-count").textContent = String(stats.customers);
     document.getElementById("sales-total").textContent = formatMoney(stats.totalSales);
     document.getElementById("stock-count").textContent = String(stats.totalStock);
+
+    const companySalesBody = document.getElementById("company-sales-body");
+    if (companySalesBody && isAdmin()) {
+        const companyNames = [
+            ...Array.from({ length: 11 }, (_, index) => `company${String(index + 1).padStart(2, "0")}`),
+            "gastrade"
+        ];
+        const companySales = getData("sales").reduce((groups, sale) => {
+            const company = sale.companyId || "Unknown";
+            if (!groups[company]) groups[company] = { count: 0, total: 0 };
+            groups[company].count += 1;
+            groups[company].total += Number(sale.total || 0);
+            return groups;
+        }, {});
+        const additionalCompanies = Object.keys(companySales).filter(company => !companyNames.includes(company));
+        companySalesBody.innerHTML = [...companyNames, ...additionalCompanies].map(company => `
+            <tr>
+                <td>${escapeHTML(company)}</td>
+                <td>${companySales[company]?.count || 0}</td>
+                <td>${escapeHTML(formatMoney(companySales[company]?.total || 0))}</td>
+            </tr>
+        `).join("");
+    }
 
     const loginNotice = document.getElementById("login-notice");
     if (loginNotice) {
@@ -741,7 +801,7 @@ function renderDashboard() {
     recentSalesBody.innerHTML = recentSales.map(sale => {
         const saleIndex = sales.indexOf(sale);
         return `
-            <tr>
+            <tr data-company-id="${escapeHTML(sale.companyId || "Unknown")}">
                 <td>${escapeHTML(sale.transactionId || sale.invoiceId || "-")}</td>
                 <td>${escapeHTML(sale.customer || sale.description || "-")}</td>
                 <td>${escapeHTML(formatMoney(sale.total || 0))}</td>
@@ -1119,6 +1179,7 @@ document.addEventListener(
 
         setupAutoSave();
         applyRolePermissions();
+        addAdminCompanyColumns();
         const siteClock = document.createElement("div");
         siteClock.className = "site-clock";
         siteClock.setAttribute("aria-label", "Current date and time");
@@ -1184,7 +1245,7 @@ if (tableBody) {
         const products = getData("products");
         const visibleProducts = products.filter(product => productFields.some(field => String(product[field] ?? "").toLowerCase().includes(query)));
         tableBody.innerHTML = visibleProducts.map((product, index) => `
-            <tr data-index="${products.indexOf(product)}">
+            <tr data-index="${products.indexOf(product)}" data-company-id="${escapeHTML(product.companyId || "Unknown")}">
                 <td class="row-number">${index + 1}</td>
                 ${productFields.map(field => `<td contenteditable="${!["stockBroughtIn", "stockSold"].includes(field) && field !== "date"}" data-field="${field}">${escapeHTML(product[field] ?? "")}</td>`).join("")}
                 <td><button class="sheet-delete" type="button" title="Delete row">Delete</button></td>
@@ -1195,7 +1256,7 @@ if (tableBody) {
     }
 
     function persistProductRow(row) {
-        if (!row) return;
+        if (!canModifySavedRow(row)) return;
         const values = {};
         productFields.forEach(field => {
             values[field] = row.querySelector(`[data-field="${field}"]`).textContent.trim();
@@ -1269,7 +1330,7 @@ if (sellerTableBody) {
     function renderSellerSheet() {
         const sellers = readSellers();
         sellerTableBody.innerHTML = sellers.map((seller, index) => `
-            <tr data-index="${index}">
+            <tr data-index="${index}" data-company-id="${escapeHTML(seller.companyId || "Unknown")}">
                 <td class="row-number">${index + 1}</td>
                 ${sellerFields.map(field => `<td contenteditable="${field !== "date"}" data-field="${field}">${field === "date" ? escapeHTML(seller[field] ? formatDate(seller[field]) : "") : escapeHTML(seller[field])}</td>`).join("")}
                 <td><button class="sheet-delete" type="button" title="Delete row">Delete</button></td>
@@ -1279,6 +1340,7 @@ if (sellerTableBody) {
     }
 
     function persistRow(row) {
+        if (!canModifySavedRow(row)) return;
         const values = {};
         sellerFields.forEach(field => {
             values[field] = row.querySelector(`[data-field="${field}"]`).textContent.trim();
@@ -1342,7 +1404,7 @@ if (salesTableBody) {
     function renderSalesSheet() {
         const sales = getData("sales");
         salesTableBody.innerHTML = sales.map((sale, index) => `
-            <tr data-index="${index}">
+            <tr data-index="${index}" data-company-id="${escapeHTML(sale.companyId || "Unknown")}">
                 <td class="row-number">${index + 1}</td>
                 ${saleFields.map(field => `<td contenteditable="true" data-field="${field}">${field === "dispatchedAt" ? escapeHTML(sale[field] ? formatDate(sale[field]) : "") : escapeHTML(sale[field])}</td>`).join("")}
                 <td>
@@ -1442,6 +1504,7 @@ if (salesTableBody) {
     refreshTillStatus();
 
     function persistSaleRow(row) {
+        if (!canModifySavedRow(row)) return;
         const isNewSale = row.classList.contains("empty-row");
         const values = {};
         saleFields.forEach(field => {
@@ -1515,7 +1578,7 @@ if (returnTableBody) {
     function renderReturnsSheet() {
         const returns = getData("returns");
         returnTableBody.innerHTML = returns.map((item, index) => `
-            <tr data-index="${index}">
+            <tr data-index="${index}" data-company-id="${escapeHTML(item.companyId || "Unknown")}">
                 <td class="row-number">${index + 1}</td>
                 ${returnFields.map(field => `<td contenteditable="true" data-field="${field}">${escapeHTML(item[field])}</td>`).join("")}
                 <td><button class="sheet-delete" type="button" title="Delete row">Delete</button></td>
@@ -1525,6 +1588,7 @@ if (returnTableBody) {
     }
 
     function persistReturnRow(row) {
+        if (!canModifySavedRow(row)) return;
         const isNewReturn = row.classList.contains("empty-row");
         const values = {};
         returnFields.forEach(field => {
@@ -1615,7 +1679,7 @@ if (purchaseTableBody) {
     function renderPurchaseSheet() {
         const purchases = getData("purchases");
         purchaseTableBody.innerHTML = purchases.map((purchase, index) => `
-            <tr data-index="${index}">
+            <tr data-index="${index}" data-company-id="${escapeHTML(purchase.companyId || "Unknown")}">
                 <td class="row-number">${index + 1}</td>
                 ${purchaseFields.map(field => `<td contenteditable="true" data-field="${field}">${escapeHTML(purchase[field])}</td>`).join("")}
                 <td><button class="sheet-delete" type="button" title="Delete row">Delete</button></td>
@@ -1625,6 +1689,7 @@ if (purchaseTableBody) {
     }
 
     function persistPurchaseRow(row) {
+        if (!canModifySavedRow(row)) return;
         const isNewPurchase = row.classList.contains("empty-row");
         const values = {};
         purchaseFields.forEach(field => {
@@ -1689,7 +1754,7 @@ if (invoiceTableBody) {
     function renderInvoiceSheet() {
         const invoices = getData("invoices");
         invoiceTableBody.innerHTML = invoices.map((invoice, index) => `
-            <tr data-index="${index}">
+            <tr data-index="${index}" data-company-id="${escapeHTML(invoice.companyId || "Unknown")}">
                 <td class="row-number">${index + 1}</td>
                 ${invoiceFields.map(field => `<td contenteditable="true" data-field="${field}">${escapeHTML(invoice[field])}</td>`).join("")}
                 <td>
@@ -1702,6 +1767,7 @@ if (invoiceTableBody) {
     }
 
     function persistInvoiceRow(row) {
+        if (!canModifySavedRow(row)) return;
         const values = {};
         invoiceFields.forEach(field => {
             values[field] = row.querySelector(`[data-field="${field}"]`).textContent.trim();
@@ -1770,7 +1836,7 @@ if (customerTableBody) {
         const customers = getData("customers");
         const visibleCustomers = customers.filter(customer => customerFields.some(field => String(customer[field] ?? "").toLowerCase().includes(query)));
         customerTableBody.innerHTML = visibleCustomers.map((customer, index) => `
-            <tr data-index="${customers.indexOf(customer)}">
+            <tr data-index="${customers.indexOf(customer)}" data-company-id="${escapeHTML(customer.companyId || "Unknown")}">
                 <td class="row-number">${index + 1}</td>
                 ${customerFields.map(field => `<td contenteditable="${field !== "date"}" data-field="${field}">${field === "date" ? escapeHTML(customer[field] ? formatDate(customer[field]) : "") : escapeHTML(customer[field])}</td>`).join("")}
                 <td><button class="sheet-delete" type="button" title="Delete row">Delete</button></td>
@@ -1781,6 +1847,7 @@ if (customerTableBody) {
     }
 
     function persistCustomerRow(row) {
+        if (!canModifySavedRow(row)) return;
         const values = {};
         customerFields.forEach(field => {
             values[field] = row.querySelector(`[data-field="${field}"]`).textContent.trim();

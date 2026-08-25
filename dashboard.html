@@ -33,7 +33,7 @@
 
         <aside class="sidebar">
 
-            <button class="menu-button active" onclick="window.location.href='index.html'">
+            <button class="menu-button active" onclick="window.location.href='dashboard.html'">
                 Dashboard
             </button>
 
@@ -149,6 +149,26 @@
             <section class="recent-sales" data-admin-only>
                 <h2>Company Login Notifications</h2>
                 <div id="login-notice" class="dashboard-notice">No company logins recorded yet.</div>
+            </section>
+
+            <section class="recent-sales" data-admin-only>
+                <h2>Sales by Company</h2>
+                <div class="table-container seller-sheet-container">
+                    <table class="pos-data-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Number of Sales</th>
+                                <th>Total Sales</th>
+                            </tr>
+                        </thead>
+                        <tbody id="company-sales-body">
+                            <tr>
+                                <td colspan="3" style="text-align:center; padding:30px;">No sales recorded yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
 

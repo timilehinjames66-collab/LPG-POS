@@ -682,6 +682,12 @@ tbody tr:hover {
     text-decoration: underline;
 }
 
+.company-column {
+    white-space: nowrap;
+    font-weight: 700;
+    color: #166534;
+}
+
 @keyframes logout-progress {
     from {
         transform: translateX(-100%);

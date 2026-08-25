@@ -18,7 +18,7 @@
 
     <div class="container">
         <aside class="sidebar">
-            <button class="menu-button driver-hidden" onclick="window.location.href='index.html'">Dashboard</button>
+            <button class="menu-button driver-hidden" onclick="window.location.href='dashboard.html'">Dashboard</button>
             <button class="menu-button driver-hidden" onclick="window.location.href='sales.html'">POS / Sales</button>
             <button class="menu-button driver-hidden" onclick="window.location.href='product.html'">Products</button>
             <button class="menu-button active">Logistics Records</button>
@@ -75,6 +75,13 @@
                                     <th scope="row"><label for="trip-allowance">Driver Trip Allowance (NGN)</label>
                                     </th>
                                     <td><input id="trip-allowance" type="number" min="0" step="0.01" value="0"></td>
+                                    <th scope="row"><label for="impromptu-expense">Impromptu Expenses (NGN)</label></th>
+                                    <td><input id="impromptu-expense" type="number" min="0" step="0.01" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label for="impromptu-reason">Why was this expense needed?</label>
+                                    </th>
+                                    <td><input id="impromptu-reason" placeholder="Enter reason"></td>
                                     <th scope="row"><label for="tare-initial">Truck Tare Weight - Initial
                                             (KG)</label>
                                     </th>
@@ -117,6 +124,8 @@
                             <th>Purchase NGN</th>
                             <th>Union NGN</th>
                             <th>Allowance NGN</th>
+                            <th>Impromptu NGN</th>
+                            <th>Expense Reason</th>
                             <th>Tare Initial</th>
                             <th>Tare Final</th>
                             <th>Weight Difference</th>
@@ -172,20 +181,14 @@
         }
 
         function updateTotal() {
-            document.getElementById("total-cost").value = ["fuel-naira", "union-cost", "trip-allowance"]
+            document.getElementById("total-cost").value = ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"]
                 .reduce((total, id) => total + Number(value(id) || 0), 0).toFixed(2);
-            const landingCost = ["purchase-cost", "fuel-naira", "union-cost", "trip-allowance"]
-                .reduce((total, id) => total + Number(value(id) || 0), 0);
-            document.getElementById("landing-cost").value = landingCost.toFixed(2);
-            document.getElementById("landing-cost-kg").value = Number(value("fuel-kg") || 0)
-                ? (landingCost / Number(value("fuel-kg"))).toFixed(2)
-                : "0.00";
         }
 
         function renderRecords() {
             const records = readRecords();
             tableBody.innerHTML = records.map((record, index) => `
-                <tr>
+                <tr data-company-id="${window.POS.escapeHTML(record.companyId || "Unknown")}">
                     <td>${window.POS.escapeHTML(record.date)}</td>
                     <td>${window.POS.escapeHTML(record.driver)}</td>
                     <td>${window.POS.escapeHTML(record.truck)}</td>
@@ -196,6 +199,8 @@
                     <td>${window.POS.escapeHTML(window.POS.formatMoney(record.purchaseCost))}</td>
                     <td>${window.POS.escapeHTML(window.POS.formatMoney(record.unionCost))}</td>
                     <td>${window.POS.escapeHTML(window.POS.formatMoney(record.allowance))}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.impromptuExpense || 0))}</td>
+                    <td>${window.POS.escapeHTML(record.impromptuReason || "")}</td>
                     <td>${window.POS.escapeHTML(record.tareInitial)}</td>
                     <td>${window.POS.escapeHTML(record.tareFinal)}</td>
                     <td>${window.POS.escapeHTML(record.weightDifference)}</td>
@@ -204,14 +209,21 @@
                     <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCostKg))}</td>
                     <td>${window.POS.isAdmin() ? `<button class="sheet-delete" type="button" data-index="${index}">Delete</button>` : "Input only"}</td>
                 </tr>
-            `).join("") || `<tr><td colspan="14" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
+            `).join("") || `<tr><td colspan="19" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
             tripCount.textContent = `${records.length} trip${records.length === 1 ? "" : "s"}`;
         }
 
-        ["fuel-kg", "purchase-cost", "fuel-naira", "union-cost", "trip-allowance"].forEach(id => document.getElementById(id).addEventListener("input", updateTotal));
+        ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"].forEach(id => document.getElementById(id).addEventListener("input", updateTotal));
         form.addEventListener("submit", event => {
             event.preventDefault();
             updateTotal();
+            const impromptuExpense = Number(value("impromptu-expense") || 0);
+            const impromptuReason = value("impromptu-reason").trim();
+            if (impromptuExpense > 0 && !impromptuReason) {
+                status.textContent = "Please explain the impromptu expense";
+                document.getElementById("impromptu-reason").focus();
+                return;
+            }
             const record = {
                 id: window.POS.generateId("TRIP"),
                 date: value("trip-date"),
@@ -221,15 +233,19 @@
                 to: value("destination-to").trim(),
                 fuelKg: Number(value("fuel-kg")),
                 fuelNaira: Number(value("fuel-naira")),
-                purchaseCost: Number(value("purchase-cost")),
+                purchaseCost: 0,
                 unionCost: Number(value("union-cost") || 0),
                 allowance: Number(value("trip-allowance") || 0),
+                impromptuExpense,
+                impromptuReason,
                 tareInitial: Number(value("tare-initial")),
                 tareFinal: Number(value("tare-final")),
                 weightDifference: Number(value("tare-initial")) - Number(value("tare-final")),
                 totalCost: Number(value("total-cost")),
-                landingCost: Number(value("landing-cost")),
-                landingCostKg: Number(value("landing-cost-kg")),
+                landingCost: Number(value("total-cost")),
+                landingCostKg: Number(value("fuel-kg") || 0)
+                    ? Number(value("total-cost")) / Number(value("fuel-kg"))
+                    : 0,
                 companyId: currentCompany()
             };
             const records = readRecords();

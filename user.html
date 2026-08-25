@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - LPG POS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1>User Management</h1>
+                    <p>View your active profile, security role, and session status.</p>
+                </div>
+            </div>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet profile-table">
+                    <thead>
+                        <tr>
+                            <th>Account Property</th>
+                            <th>Current Configuration Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Active Profile Operator</td>
+                            <td id="profileName">Admin User</td>
+                        </tr>
+                        <tr>
+                            <td>System Security Role</td>
+                            <td id="profileRole">-</td>
+                        </tr>
+                        <tr>
+                            <td>Workstation Node Session</td>
+                            <td>Active Session Logged</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        const currentUser = window.POS.getCurrentUser();
+        if (currentUser && currentUser.username) {
+            document.getElementById("profileName").textContent = currentUser.username;
+            document.getElementById("profileRole").textContent = currentUser.role === "admin" ? "Administrator" : "Input Staff";
+        }
+    </script>
+</body>
+
+</html>

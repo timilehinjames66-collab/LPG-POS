@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - LPG POS</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div>
+            <h1 id="brand-name"><span class="brand-fire" aria-hidden="true">🔥</span> LPG POS</h1>
+            <p>Business Management Dashboard</p>
+            <p id="current-date" aria-label="Today's date"></p>
+        </div>
+
+    </header>
+
+
+    <!-- MAIN CONTAINER -->
+
+    <div class="container">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <button class="menu-button active" onclick="window.location.href='index.html'">
+                Dashboard
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='sales.html'">
+                POS / Sales
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='customers.html'">
+                Customers
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='vendors.html'">
+                Vendors
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='product.html'">
+                Product
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='purchases.html'">
+                Purchases
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='invoices.html'">
+                Invoices
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='returns.html'">
+                Returns
+            </button>
+
+            <button class="menu-button" data-driver-only onclick="window.location.href='logisticrecord.html'">
+                Logistics Records
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='reports.html'">
+                Reports
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='settings.html'">
+                Settings
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='user.html'">
+                Users
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='logout.html'">
+                Logout
+            </button>
+
+        </aside>
+
+
+        <!-- DASHBOARD CONTENT -->
+
+        <main class="main-content">
+
+            <div class="page-header">
+
+                <div>
+                    <h2>Dashboard</h2>
+
+                    <p>
+                        Overview of your business.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- SUMMARY CARDS -->
+
+            <div class="dashboard-grid">
+
+                <div class="card">
+                    <h3>Product</h3>
+
+                    <p id="product-count" class="dashboard-number">
+                        0
+                    </p>
+                </div>
+
+
+                <div class="card">
+                    <h3>Customers</h3>
+
+                    <p id="customers-count" class="dashboard-number">
+                        0
+                    </p>
+                </div>
+
+
+                <div class="card">
+                    <h3>Total Sales</h3>
+
+                    <p id="sales-total" class="dashboard-number">
+                        ₦0.00
+                    </p>
+                </div>
+
+
+                <div class="card">
+                    <h3>Stock Quantity</h3>
+
+                    <p id="stock-count" class="dashboard-number">
+                        0
+                    </p>
+                </div>
+
+            </div>
+
+            <section class="recent-sales" data-admin-only>
+                <h2>Company Login Notifications</h2>
+                <div id="login-notice" class="dashboard-notice">No company logins recorded yet.</div>
+            </section>
+
+
+            <!-- RECENT SALES -->
+
+            <section class="recent-sales">
+
+                <h2>Recent Sales</h2>
+
+                <div class="table-container seller-sheet-container">
+                    <table class="pos-data-table">
+
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recent-sales-body">
+
+                            <tr>
+                                <td colspan="6" style="text-align:center; padding:30px;">
+                                    No sales recorded yet.
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </section>
+
+
+            <!-- PRODUCT -->
+
+            <section class="recent-sales">
+
+                <h2>Product</h2>
+
+                <div class="table-container seller-sheet-container">
+                    <table class="pos-data-table">
+
+                        <thead>
+
+
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="product-body">
+
+                            <tr>
+
+                                <td colspan="5" style="text-align:center; padding:30px;">
+                                    No product available yet.
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </section>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <section class="recent-sales">
+
+                <h2>Quick Actions</h2>
+
+                <div class="quick-actions">
+
+                    <button class="action-button" onclick="window.location.href='sales.html'">
+                        Add Sale
+                    </button>
+
+                    <button class="action-button" onclick="window.location.href='product.html'">
+                        Add Product
+                    </button>
+
+                    <button class="action-button" onclick="window.location.href='customers.html'">
+                        Add Customer
+                    </button>
+
+                    <button class="action-button" onclick="window.location.href='purchases.html'">
+                        Record Purchase
+                    </button>
+                    <button class="action-button" onclick="window.location.href='vendors.html'">
+                        Add Vendor
+                    </button>
+                    <button class="action-button" onclick="window.location.href='reports.html'">
+                        View Reports
+                    </button>
+                    <button class="action-button" onclick="window.location.href='invoices.html'">
+                        Generate Invoice
+                    </button>
+
+                    <button class="action-button" onclick="window.location.href='returns.html'">
+                        Record Return
+                    </button>
+
+                    <button class="action-button" data-driver-only onclick="window.location.href='logisticrecord.html'">
+                        Record Logistics Trip
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>
+            &copy; 2026 LPG POS. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+    <script>
+        if (window.POS.getCurrentUser()?.role === "driver") {
+            document.querySelectorAll("[data-driver-only]").forEach(control => {
+                control.hidden = false;
+                control.disabled = false;
+            });
+        }
+    </script>
+
+</body>
+
+</html>

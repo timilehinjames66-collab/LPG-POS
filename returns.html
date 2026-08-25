@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cylinder Returns - LPG POS</title>
+    <!-- Core layout designs inherit cleanly from your master styles file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <main class="main-content">
+            <!-- Dynamic Page Header & Primary Actions Layout -->
+            <div class="page-header">
+                <div>
+                    <h1>Cylinder Returns & Exchange Logs</h1>
+                    <p>Track customer cylinder drop-offs, manage defective valve reports, and process gas refilling
+                        reversals.</p>
+                </div>
+                <div class="action-bar">
+                    <button class="primary-button" id="header-add-return" type="button">Log Cylinder Return</button>
+                </div>
+            </div>
+            <div class="seller-sheet-toolbar">
+                <span class="sheet-status" id="returns-sheet-status">All changes saved</span>
+                <button class="btn-primary" id="add-return-row" type="button">+ Add row</button>
+            </div>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Return ID</th>
+                            <th>Invoice Ref ID</th>
+                            <th>Cylinder Size / Description</th>
+                            <th>Qty Returned</th>
+                            <th>Date Processed</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="returnTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+            <!-- Application script engine inclusion connection link -->
+            <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings - LPG POS</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div>
+            <h1 id="company-name">LPG POS</h1>
+            <p>Business Settings</p>
+        </div>
+
+    </header>
+
+
+    <div class="container">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <button class="menu-button" onclick="window.location.href='index.html'">
+                Dashboard
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='sales.html'">
+                POS / Sales
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='customers.html'">
+                Customers
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='vendors.html'">
+                Vendors
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='product.html'">
+                Products
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='purchases.html'">
+                Purchases
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='invoices.html'">
+                Invoices
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='returns.html'">
+                Returns
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='reports.html'">
+                Reports
+            </button>
+
+            <button class="menu-button active">
+                Settings
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='user.html'">
+                Users
+            </button>
+
+            <button class="menu-button" onclick="window.location.href='logout.html'">
+                Logout
+            </button>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content">
+
+            <div class="page-header">
+
+                <div>
+
+                    <h2>Business Settings</h2>
+
+                    <p>
+                        Enter and manage your company information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUSINESS INFORMATION -->
+
+            <section class="card">
+
+                <h2>Business Information</h2>
+
+                <form id="settings-form">
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="business-name">
+                                Business Name
+                            </label>
+
+                            <input type="text" id="business-name" placeholder="Enter business name" required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="business-phone">
+                                Phone Number
+                            </label>
+
+                            <input type="tel" id="business-phone" placeholder="Enter business phone">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="business-email">
+                                Email Address
+                            </label>
+
+                            <input type="email" id="business-email" placeholder="Enter business email">
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="business-address">
+                                Business Address
+                            </label>
+
+                            <input type="text" id="business-address" placeholder="Ogun State, Nigeria">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="currency">
+                                Currency
+                            </label>
+
+                            <select id="currency">
+
+                                <option value="NGN">
+                                    Nigerian Naira (₦)
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="tax-rate">
+                                Tax Rate (%)
+                            </label>
+
+                            <input type="number" id="tax-rate" min="0" step="0.01" value="0">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="low-stock">
+                                Low Stock Warning Level
+                            </label>
+
+                            <input type="number" id="low-stock" min="0" value="5">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button type="submit" class="btn-primary" data-admin-only>
+
+                            Save Settings
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- RECEIPT SETTINGS -->
+
+            <section class="card">
+
+                <h2>Receipt Information</h2>
+
+                <form id="receipt-form">
+
+                    <div class="form-group">
+
+                        <label for="receipt-header">
+                            Receipt Header
+                        </label>
+
+                        <textarea id="receipt-header" rows="4"
+                            placeholder="Text shown at the top of receipts"></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="receipt-footer">
+                            Receipt Footer
+                        </label>
+
+                        <textarea id="receipt-footer" rows="4" placeholder="Thank you for your business"></textarea>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button type="submit" class="btn-primary" data-admin-only>
+
+                            Save Receipt Settings
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- DISPLAY SETTINGS -->
+
+            <section class="card">
+
+                <h2>Receipt Display</h2>
+
+                <label>
+
+                    <input type="checkbox" id="show-phone">
+
+                    Show phone number
+
+                </label>
+
+                <br>
+
+                <label>
+
+                    <input type="checkbox" id="show-address">
+
+                    Show business address
+
+                </label>
+
+            </section>
+
+
+            <p id="save-message" style="margin-top:20px;">
+            </p>
+
+        </main>
+
+    </div>
+
+
+    <!-- SHARED JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                // ==============================
+                // LOAD SETTINGS
+                // ==============================
+
+                const settings =
+                    POS.getSettings();
+
+
+                const businessName =
+                    document.getElementById(
+                        "business-name"
+                    );
+
+                const businessPhone =
+                    document.getElementById(
+                        "business-phone"
+                    );
+
+                const businessEmail =
+                    document.getElementById(
+                        "business-email"
+                    );
+
+                const businessAddress =
+                    document.getElementById(
+                        "business-address"
+                    );
+
+                const currency =
+                    document.getElementById(
+                        "currency"
+                    );
+
+                const taxRate =
+                    document.getElementById(
+                        "tax-rate"
+                    );
+
+                const lowStock =
+                    document.getElementById(
+                        "low-stock"
+                    );
+
+                const receiptHeader =
+                    document.getElementById(
+                        "receipt-header"
+                    );
+
+                const receiptFooter =
+                    document.getElementById(
+                        "receipt-footer"
+                    );
+
+                const showPhone =
+                    document.getElementById(
+                        "show-phone"
+                    );
+
+                const showAddress =
+                    document.getElementById(
+                        "show-address"
+                    );
+
+
+                // ==============================
+                // PUT SAVED VALUES IN FORM
+                // ==============================
+
+                businessName.value =
+                    settings.businessName || "";
+
+                businessPhone.value =
+                    settings.businessPhone || "";
+
+                businessEmail.value =
+                    settings.businessEmail || "";
+
+                businessAddress.value =
+                    settings.businessAddress ||
+                    "Ogun State, Nigeria";
+
+                currency.value =
+                    settings.currency || "NGN";
+
+                taxRate.value =
+                    settings.taxRate || 0;
+
+                lowStock.value =
+                    settings.lowStock || 5;
+
+                receiptHeader.value =
+                    settings.receiptHeader || "";
+
+                receiptFooter.value =
+                    settings.receiptFooter || "";
+
+                showPhone.checked =
+                    settings.showPhone !== false;
+
+                showAddress.checked =
+                    settings.showAddress !== false;
+
+
+                // ==============================
+                // COMPANY NAME
+                // ==============================
+
+                document.getElementById(
+                    "company-name"
+                ).textContent =
+                    settings.businessName ||
+                    "LPG POS";
+
+
+                // ==============================
+                // SAVE BUSINESS SETTINGS
+                // ==============================
+
+                document.getElementById(
+                    "settings-form"
+                ).addEventListener(
+                    "submit",
+                    function (event) {
+
+                        event.preventDefault();
+
+
+                        const current =
+                            POS.getSettings();
+
+
+                        current.businessName =
+                            businessName.value.trim();
+
+                        current.businessPhone =
+                            businessPhone.value.trim();
+
+                        current.businessEmail =
+                            businessEmail.value.trim();
+
+                        current.businessAddress =
+                            businessAddress.value.trim();
+
+                        current.currency =
+                            currency.value;
+
+                        current.taxRate =
+                            Number(
+                                taxRate.value || 0
+                            );
+
+                        current.lowStock =
+                            Number(
+                                lowStock.value || 5
+                            );
+
+                        current.showPhone =
+                            showPhone.checked;
+
+                        current.showAddress =
+                            showAddress.checked;
+
+
+                        POS.saveSettings(
+                            current
+                        );
+
+
+                        document.getElementById(
+                            "company-name"
+                        ).textContent =
+                            current.businessName ||
+                            "LPG POS";
+
+
+                        showMessage(
+                            "Business settings saved successfully."
+                        );
+
+                    }
+                );
+
+
+                // ==============================
+                // SAVE RECEIPT SETTINGS
+                // ==============================
+
+                document.getElementById(
+                    "receipt-form"
+                ).addEventListener(
+                    "submit",
+                    function (event) {
+
+                        event.preventDefault();
+
+
+                        const current =
+                            POS.getSettings();
+
+
+                        current.receiptHeader =
+                            receiptHeader.value;
+
+                        current.receiptFooter =
+                            receiptFooter.value;
+
+
+                        POS.saveSettings(
+                            current
+                        );
+
+
+                        showMessage(
+                            "Receipt settings saved successfully."
+                        );
+
+                    }
+                );
+
+
+                // ==============================
+                // MESSAGE
+                // ==============================
+
+                function showMessage(message) {
+
+                    const element =
+                        document.getElementById(
+                            "save-message"
+                        );
+
+
+                    element.textContent =
+                        message;
+
+
+                    setTimeout(
+                        function () {
+
+                            element.textContent =
+                                "";
+
+                        },
+                        3000
+                    );
+
+                }
+
+            }
+        );
+
+    </script scr="script.js"></script>
+
+</body>
+
+</html>

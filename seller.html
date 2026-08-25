@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pump Attendants & Operators - LPG POS</title>
+    <!-- Core layout designs inherit cleanly from your master styles file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <main class="main-content">
+            <!-- Dynamic Page Header & Primary Actions Layout -->
+            <div class="page-header">
+                <div>
+                    <h1>Pump Attendants & Terminal Operators</h1>
+                    <p>Manage gas station personnel registry, assign attendants to refilling bays, and track active
+                        operators.</p>
+                </div>
+                <div class="action-bar">
+                    <button class="primary-button" id="header-add-seller" type="button">Add New Attendant</button>
+                </div>
+            </div>
+
+            <!-- Informational Audit Panel -->
+            <div class="dashboard-notice"
+                style="margin-bottom: 24px; background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef;">
+                <h4 style="margin: 0 0 6px 0; font-size: 1rem; color: #495057;">Operator Shift Tracking Notice</h4>
+                <p style="margin: 0; color: #6c757d; font-size: 0.9rem; line-height: 1.4;">Attendants registered here
+                    can be associated with individual sales transactions. Use this panel to audit your current on-duty
+                    plant staff and terminal logging IDs.</p>
+            </div>
+            <div class="seller-sheet-toolbar">
+                <span class="sheet-status" id="seller-sheet-status">All changes saved</span>
+                <button class="btn-primary" id="add-seller-row" type="button">+ Add row</button>
+            </div>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Operator ID</th>
+                            <th>Attendant / Staff Name</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Shift</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sellerTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application script engine inclusion connection link -->
+    <script src="script.js"></script>
+</body>
+
+</html>

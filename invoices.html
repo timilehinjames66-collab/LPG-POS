@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Records Ledger - LPG POS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <main class="main-content">
+            <div class="page-header">
+                <h1>Invoice Registry & Billing Transactions</h1>
+                <p>Review customer billing invoices, calculate gross amounts, and review order documentation timelines.
+                </p>
+                <div class="action-bar">
+                    <button class="primary-button" id="header-add-invoice" type="button">Generate Billing
+                        Invoice</button>
+                </div>
+            </div>
+
+            <div class="seller-sheet-toolbar">
+                <span class="sheet-status" id="invoices-sheet-status">All changes saved</span>
+                <button class="btn-primary" id="add-invoice-row" type="button">+ Add row</button>
+            </div>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet invoice-sheet">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Invoice Reference ID</th>
+                            <th>Associated Customer</th>
+                            <th>Total Gross Amount (NGN)</th>
+                            <th>Payment Method</th>
+                            <th>Date Issued</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

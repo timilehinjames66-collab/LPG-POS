@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LPG POS - Products & Inventory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1>Products & Inventory</h1>
+                    <p>Manage LPG products, prices, stock levels, and units.</p>
+                </div>
+            </div>
+
+            <div class="seller-sheet-toolbar">
+                <div>
+                    <input type="search" id="productSearch" placeholder="Search products..."
+                        aria-label="Search products">
+                    <span class="sheet-status" id="productCount">0 products</span>
+                </div>
+                <button class="btn-primary" id="add-product-row" type="button">+ Add row</button>
+            </div>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet product-sheet" id="productTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Waybill Number</th>
+                            <th>Truck Number</th>
+                            <th>Driver Name</th>
+                            <th>Driver Number</th>
+                            <th>Product Name</th>
+                            <th>Size</th>
+                            <th>Cost Price (NGN)</th>
+                            <th>Selling Price (NGN)</th>
+                            <th>Stock</th>
+                            <th>Stock Brought In</th>
+                            <th>Stock Sold</th>
+                            <th>Unit</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

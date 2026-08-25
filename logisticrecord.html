@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistics Records - Mikel Gas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div>
+            <h1>Mikel Gas Logistics</h1>
+            <p>Truck trips, fuel, weights, and allowances</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <button class="menu-button driver-hidden" onclick="window.location.href='index.html'">Dashboard</button>
+            <button class="menu-button driver-hidden" onclick="window.location.href='sales.html'">POS / Sales</button>
+            <button class="menu-button driver-hidden" onclick="window.location.href='product.html'">Products</button>
+            <button class="menu-button active">Logistics Records</button>
+            <button class="menu-button driver-hidden" onclick="window.location.href='reports.html'">Reports</button>
+            <button class="menu-button" onclick="window.location.href='logout.html'">Logout</button>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h2>Logistics Trip Record</h2>
+                    <p>Record every truck movement and delivery cost.</p>
+                </div>
+            </div>
+
+            <section class="card">
+                <form id="logistics-form">
+                    <div class="table-container logistics-entry-table">
+                        <table class="pos-data-table">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Entry</th>
+                                    <th>Field</th>
+                                    <th>Entry</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><label for="trip-date">Date</label></th>
+                                    <td><input id="trip-date" type="date" required></td>
+                                    <th scope="row"><label for="driver-name">Driver Name</label></th>
+                                    <td><input id="driver-name" required placeholder="Enter driver name"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label for="truck-number">Truck Number</label></th>
+                                    <td><input id="truck-number" required placeholder="e.g. KJA 123 AB"></td>
+                                    <th scope="row"><label for="destination-from">Destination From</label></th>
+                                    <td><input id="destination-from" required placeholder="Starting location"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label for="destination-to">Destination To</label></th>
+                                    <td><input id="destination-to" required placeholder="Delivery destination"></td>
+                                    <th scope="row"><label for="fuel-kg">Fuel / Gas Quantity (KG)</label></th>
+                                    <td><input id="fuel-kg" type="number" min="0" step="0.01" required></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label for="fuel-naira">Fuel Cost (NGN)</label></th>
+                                    <td><input id="fuel-naira" type="number" min="0" step="0.01" required></td>
+                                    <th scope="row"><label for="union-cost">Union Cost (NGN)</label></th>
+                                    <td><input id="union-cost" type="number" min="0" step="0.01" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label for="trip-allowance">Driver Trip Allowance (NGN)</label>
+                                    </th>
+                                    <td><input id="trip-allowance" type="number" min="0" step="0.01" value="0"></td>
+                                    <th scope="row"><label for="tare-initial">Truck Tare Weight - Initial
+                                            (KG)</label>
+                                    </th>
+                                    <td><input id="tare-initial" type="number" min="0" step="0.01" required></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label for="tare-final">Truck Tare Weight - Final (KG)</label>
+                                    </th>
+                                    <td><input id="tare-final" type="number" min="0" step="0.01" required></td>
+                                    <th scope="row"><label for="total-cost">Total Trip Cost (NGN)</label></th>
+                                    <td><input id="total-cost" type="number" readonly></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn-primary" type="submit">Save Trip Record</button>
+                        <span class="sheet-status" id="logistics-status" role="status"></span>
+                    </div>
+                </form>
+            </section>
+
+            <div class="seller-sheet-toolbar">
+                <span class="sheet-status">Saved logistics records</span>
+                <strong id="trip-count">0 trips</strong>
+            </div>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Driver</th>
+                            <th>Truck No.</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Fuel KG</th>
+                            <th>Fuel NGN</th>
+                            <th>Purchase NGN</th>
+                            <th>Union NGN</th>
+                            <th>Allowance NGN</th>
+                            <th>Tare Initial</th>
+                            <th>Tare Final</th>
+                            <th>Weight Difference</th>
+                            <th>Total Cost</th>
+                            <th>Landing Cost</th>
+                            <th>Landing NGN/KG</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logistics-table-body"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const logisticsKey = "mikelGasLogisticsRecords";
+        const form = document.getElementById("logistics-form");
+        const tableBody = document.getElementById("logistics-table-body");
+        const status = document.getElementById("logistics-status");
+        const tripCount = document.getElementById("trip-count");
+        const fields = ["trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "union-cost", "trip-allowance", "tare-initial", "tare-final"];
+
+        function currentCompany() {
+            return window.POS.getCurrentUser()?.username || "local";
+        }
+
+        function readRecords() {
+            try {
+                const records = JSON.parse(localStorage.getItem(logisticsKey) || "[]");
+                return window.POS.isAdmin() ? records : records.filter(record => record.companyId === currentCompany());
+            } catch {
+                return [];
+            }
+        }
+
+        function saveRecords(records) {
+            const allRecords = JSON.parse(localStorage.getItem(logisticsKey) || "[]");
+            if (window.POS.isAdmin()) {
+                localStorage.setItem(logisticsKey, JSON.stringify(records));
+                return;
+            }
+            const existingCompanyRecords = allRecords.filter(record => record.companyId === currentCompany());
+            if (records.length < existingCompanyRecords.length) return;
+            const companyRecords = records.map(record => ({ ...record, companyId: currentCompany() }));
+            const otherRecords = allRecords.filter(record => record.companyId !== currentCompany());
+            localStorage.setItem(logisticsKey, JSON.stringify([...otherRecords, ...companyRecords]));
+        }
+
+        function value(id) {
+            return document.getElementById(id).value;
+        }
+
+        function updateTotal() {
+            document.getElementById("total-cost").value = ["fuel-naira", "union-cost", "trip-allowance"]
+                .reduce((total, id) => total + Number(value(id) || 0), 0).toFixed(2);
+            const landingCost = ["purchase-cost", "fuel-naira", "union-cost", "trip-allowance"]
+                .reduce((total, id) => total + Number(value(id) || 0), 0);
+            document.getElementById("landing-cost").value = landingCost.toFixed(2);
+            document.getElementById("landing-cost-kg").value = Number(value("fuel-kg") || 0)
+                ? (landingCost / Number(value("fuel-kg"))).toFixed(2)
+                : "0.00";
+        }
+
+        function renderRecords() {
+            const records = readRecords();
+            tableBody.innerHTML = records.map((record, index) => `
+                <tr>
+                    <td>${window.POS.escapeHTML(record.date)}</td>
+                    <td>${window.POS.escapeHTML(record.driver)}</td>
+                    <td>${window.POS.escapeHTML(record.truck)}</td>
+                    <td>${window.POS.escapeHTML(record.from)}</td>
+                    <td>${window.POS.escapeHTML(record.to)}</td>
+                    <td>${window.POS.escapeHTML(record.fuelKg)}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.fuelNaira))}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.purchaseCost))}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.unionCost))}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.allowance))}</td>
+                    <td>${window.POS.escapeHTML(record.tareInitial)}</td>
+                    <td>${window.POS.escapeHTML(record.tareFinal)}</td>
+                    <td>${window.POS.escapeHTML(record.weightDifference)}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.totalCost))}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCost))}</td>
+                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCostKg))}</td>
+                    <td>${window.POS.isAdmin() ? `<button class="sheet-delete" type="button" data-index="${index}">Delete</button>` : "Input only"}</td>
+                </tr>
+            `).join("") || `<tr><td colspan="14" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
+            tripCount.textContent = `${records.length} trip${records.length === 1 ? "" : "s"}`;
+        }
+
+        ["fuel-kg", "purchase-cost", "fuel-naira", "union-cost", "trip-allowance"].forEach(id => document.getElementById(id).addEventListener("input", updateTotal));
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            updateTotal();
+            const record = {
+                id: window.POS.generateId("TRIP"),
+                date: value("trip-date"),
+                driver: value("driver-name").trim(),
+                truck: value("truck-number").trim(),
+                from: value("destination-from").trim(),
+                to: value("destination-to").trim(),
+                fuelKg: Number(value("fuel-kg")),
+                fuelNaira: Number(value("fuel-naira")),
+                purchaseCost: Number(value("purchase-cost")),
+                unionCost: Number(value("union-cost") || 0),
+                allowance: Number(value("trip-allowance") || 0),
+                tareInitial: Number(value("tare-initial")),
+                tareFinal: Number(value("tare-final")),
+                weightDifference: Number(value("tare-initial")) - Number(value("tare-final")),
+                totalCost: Number(value("total-cost")),
+                landingCost: Number(value("landing-cost")),
+                landingCostKg: Number(value("landing-cost-kg")),
+                companyId: currentCompany()
+            };
+            const records = readRecords();
+            records.push(record);
+            saveRecords(records);
+            form.reset();
+            document.getElementById("trip-date").value = new Date().toISOString().slice(0, 10);
+            document.getElementById("total-cost").value = "0.00";
+            status.textContent = "Trip record saved";
+            renderRecords();
+        });
+
+        tableBody.addEventListener("click", event => {
+            if (!event.target.matches(".sheet-delete") || !window.POS.isAdmin()) return;
+            const records = readRecords();
+            records.splice(Number(event.target.dataset.index), 1);
+            saveRecords(records);
+            renderRecords();
+        });
+
+        document.getElementById("trip-date").value = new Date().toISOString().slice(0, 10);
+        updateTotal();
+        renderRecords();
+    </script>
+</body>
+
+</html>

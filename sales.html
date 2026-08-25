@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Terminal - LPG POS</title>
+    <!-- Core layout designs inherit cleanly from your master styles file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <main class="main-content">
+            <!-- Dynamic Page Header & Primary Actions Layout -->
+            <div class="page-header">
+                <div>
+                    <h1>LPG Sales Dispatch Terminal</h1>
+                    <p>Process gas refilling weights, track cylinder retail packages, and record active sales totals.
+                    </p>
+                </div>
+                <div class="action-bar">
+                    <button class="primary-button" id="header-add-sale" type="button">Record New Gas Sale</button>
+                </div>
+            </div>
+
+            <!-- Informational Dispensing Audit Panel -->
+            <div class="dashboard-notice"
+                style="margin-bottom: 24px; background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef;">
+                <h4 style="margin: 0 0 6px 0; font-size: 1rem; color: #495057;">Refilling Scales Entry Check</h4>
+                <p style="margin: 0; color: #6c757d; font-size: 0.9rem; line-height: 1.4;">Make sure weights match
+                    physical electronic dispenser meters exactly before hitting submit. Logging a sale automatically
+                    increments your gross earnings tracker on the main plant console.</p>
+            </div>
+            <div class="seller-sheet-toolbar">
+                <span class="sheet-status" id="sales-sheet-status">All changes saved</span>
+                <button class="btn-primary" id="add-sale-row" type="button">+ Add row</button>
+            </div>
+
+            <section class="touch-checkout" aria-labelledby="checkout-title">
+                <div class="touch-checkout-heading">
+                    <div>
+                        <h2 id="checkout-title">Quick Checkout</h2>
+                        <p>Enter a sale using the touchscreen controls.</p>
+                    </div>
+                    <span class="checkout-status" id="checkout-status" role="status"></span>
+                </div>
+                <form id="checkout-form" class="touch-checkout-form">
+                    <label>
+                        Till
+                        <input id="checkout-till" required value="Till 1" autocomplete="off">
+                    </label>
+                    <label>
+                        Item or gas size
+                        <input id="checkout-description" required autocomplete="off" placeholder="e.g. 12.5kg refill">
+                    </label>
+                    <label>
+                        Quantity
+                        <input id="checkout-quantity" required inputmode="decimal" type="number" min="0.01" step="0.01"
+                            value="1">
+                    </label>
+                    <label>
+                        Total paid (NGN)
+                        <input id="checkout-total" required inputmode="decimal" type="number" min="0" step="0.01"
+                            placeholder="0.00">
+                    </label>
+                    <label>
+                        Customer
+                        <input id="checkout-customer" autocomplete="off" placeholder="Walk-in customer">
+                    </label>
+                    <label>
+                        Discount (NGN)
+                        <input id="checkout-discount" inputmode="decimal" type="number" min="0" step="0.01" value="0">
+                    </label>
+                    <label>
+                        Tax (%)
+                        <input id="checkout-tax" inputmode="decimal" type="number" min="0" step="0.01" value="0">
+                    </label>
+                    <label>
+                        Payment method
+                        <select id="checkout-payment">
+                            <option>Cash</option>
+                            <option>Bank Transfer</option>
+                            <option>POS Terminal</option>
+                            <option>Card</option>
+                            <option>Credit</option>
+                        </select>
+                    </label>
+                    <div class="checkout-actions">
+                        <button class="primary-button checkout-submit" type="submit">Complete Sale</button>
+                        <button class="btn-primary checkout-submit" type="submit" data-print-receipt="true">Complete
+                            &amp; Print</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="touch-checkout till-panel" aria-labelledby="till-title">
+                <div class="touch-checkout-heading">
+                    <div>
+                        <h2 id="till-title">Till Shift</h2>
+                        <p id="till-status">No open till</p>
+                    </div>
+                </div>
+                <form id="till-form" class="touch-checkout-form till-form">
+                    <label>
+                        Till name
+                        <input id="shift-till" required value="Till 1">
+                    </label>
+                    <label>
+                        Opening cash (NGN)
+                        <input id="opening-cash" required inputmode="decimal" type="number" min="0" step="0.01"
+                            value="0">
+                    </label>
+                    <label>
+                        Opening gas (KG)
+                        <input id="opening-kg" required inputmode="decimal" type="number" min="0" step="0.01" value="0">
+                    </label>
+                    <button class="primary-button" id="open-till" type="submit">Open Till</button>
+                    <label>
+                        Closing cash (NGN)
+                        <input id="closing-cash" inputmode="decimal" type="number" min="0" step="0.01" value="0">
+                    </label>
+                    <label>
+                        Closing gas (KG)
+                        <input id="closing-kg" inputmode="decimal" type="number" min="0" step="0.01" value="0">
+                    </label>
+                    <button class="btn-primary" id="close-till" type="button">Close Till</button>
+                </form>
+            </section>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Transaction ID</th>
+                            <th>Gas Size / Description</th>
+                            <th>Qty Refilled</th>
+                            <th>Subtotal (NGN)</th>
+                            <th>Discount (NGN)</th>
+                            <th>Tax (NGN)</th>
+                            <th>Total Price Paid (NGN)</th>
+                            <th>Customer</th>
+                            <th>Till</th>
+                            <th>Operator</th>
+                            <th>Payment</th>
+                            <th>Time Dispatched</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application script engine inclusion connection link -->
+    <script src="script.js"></script>
+</body>
+
+</html>

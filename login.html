@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - LPG POS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-page-body">
+    <main class="login-card" aria-labelledby="login-title">
+        <div class="login-brand" aria-hidden="true">LPG</div>
+        <p class="login-eyebrow">LPG POS</p>
+        <img class="gas-worker-photo" src="gas.1.jpg" alt="Gas worker filling a cylinder">
+        <div class="gas-speech">Welcome to Mikel Gas!</div>
+        <p class="welcome-message">Welcome to Mikel Gas</p>
+        <h1 id="login-title">Welcome back</h1>
+        <p class="login-intro">Sign in to manage your inventory, sales, and business records.</p>
+
+        <form id="loginForm" autocomplete="on">
+            <div class="login-field">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required autocomplete="username">
+            </div>
+
+            <div class="login-field password-field">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required
+                    autocomplete="current-password">
+                <button type="button" class="password-toggle" id="password-toggle"
+                    aria-label="Show password">Show</button>
+            </div>
+
+            <p class="login-error" id="loginError" role="alert" aria-live="polite"></p>
+            <button type="submit" class="primary-button login-submit-btn">Sign in</button>
+        </form>
+
+        <p class="login-help">Use your authorized operator credentials.</p>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

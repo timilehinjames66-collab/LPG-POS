@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signing Out - LPG POS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="logout-page-body">
+
+    <main class="logout-card" aria-labelledby="logout-title">
+        <div class="logout-mark" aria-hidden="true">LPG</div>
+        <p class="logout-eyebrow">LPG POS</p>
+        <img class="logout-worker-photo" src="gas.2.jpg" alt="Orange LPG cylinders">
+        <p class="goodbye-message">Goodbye from Mikel Gas</p>
+        <h1 id="logout-title">Signing you out</h1>
+        <p class="logout-message" aria-live="polite">Your session is being closed securely.</p>
+        <div class="logout-progress" role="status" aria-label="Signing out">
+            <span></span>
+        </div>
+        <p class="logout-note">You will be redirected to the login page.</p>
+        <a class="logout-link" href="login.html">Return to login</a>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            setTimeout(function () {
+                window.POS.logoutUser();
+            }, 1200);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Orders Ledger - LPG POS</title>
+    <!-- Core layout designs inherit cleanly from your master styles file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <main class="main-content">
+            <!-- Dynamic Page Header & Primary Actions Layout -->
+            <div class="page-header">
+                <div>
+                    <h1>Supplier Purchases & Inbound Stock</h1>
+                    <p>Track wholesale stock replenishment purchase records, document bulk cost margins, and balance
+                        supplier allocations.</p>
+                </div>
+                <div class="action-bar">
+                    <button class="primary-button" id="header-add-purchase" type="button">Record Stock Purchase</button>
+                </div>
+            </div>
+
+            <!-- Informational Acquisition Audit Panel -->
+            <div class="dashboard-notice"
+                style="margin-bottom: 24px; background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef;">
+                <h4 style="margin: 0 0 6px 0; font-size: 1rem; color: #495057;">Wholesale Procurement Tracker</h4>
+                <p style="margin: 0; color: #6c757d; font-size: 0.9rem; line-height: 1.4;">Logging supplier purchases
+                    updates your cost margins metrics securely. Total outbound expenditure lines are summarized
+                    dynamically on your analytical reports board.</p>
+            </div>
+            <div class="seller-sheet-toolbar">
+                <span class="sheet-status" id="purchases-sheet-status">All changes saved</span>
+                <button class="btn-primary" id="add-purchase-row" type="button">+ Add row</button>
+            </div>
+
+            <div class="table-container seller-sheet-container">
+                <table class="pos-data-table seller-sheet purchase-sheet">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Purchase Order ID</th>
+                            <th>Vendor Enterprise</th>
+                            <th>Inbound Item Name</th>
+                            <th>Lot Size Qty</th>
+                            <th>Wholesale Cost Paid (NGN)</th>
+                            <th>Log Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="purchaseTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+            <!-- Application script engine inclusion connection link -->
+            <script src="script.js"></script>
+</body>
+
+</html>

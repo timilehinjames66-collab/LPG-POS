@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPG POS - Customers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+
+    <!-- MAIN -->
+    <div class="container">
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <h1>Customers</h1>
+                    <p>Manage your LPG customers</p>
+                </div>
+
+                <button class="primary-button" id="generateCustomerBtn" type="button">
+                    + Add Customer
+                </button>
+            </header>
+
+
+            <!-- SEARCH -->
+            <section class="seller-sheet-toolbar">
+                <input type="search" id="customerSearch" placeholder="Search customers..."
+                    aria-label="Search customers">
+                <div>
+                    <span class="sheet-status" id="customerCount">0 Customers</span>
+                    <button class="btn-primary" id="add-customer-row" type="button">+ Add row</button>
+                </div>
+            </section>
+
+            <section class="section recent-sales">
+
+                <div class="section-header">
+                    <h2>Customer List</h2>
+                    <span id="customerCount">0 Customers</span>
+                </div>
+
+                <div class="table-container seller-sheet-container">
+                    <table class="pos-data-table seller-sheet customer-table" id="customerTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customerTableBody"></tbody>
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1087,6 +1087,119 @@ textarea {
     }
 }
 
+.logistics-page .main-content {
+    overflow-x: hidden;
+}
+
+.logistics-page .card {
+    padding: 20px;
+}
+
+.logistics-entry-table {
+    overflow-x: auto;
+}
+
+.logistics-entry-table input {
+    width: 100%;
+    min-width: 150px;
+}
+
+.logistics-page .seller-sheet-container {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+}
+
+.logistics-page .seller-sheet {
+    min-width: 1450px;
+}
+
+@media (max-width: 600px) {
+    .logistics-page .page-header {
+        margin-bottom: 18px;
+    }
+
+    .logistics-page .card {
+        padding: 14px;
+    }
+
+    .logistics-entry-table {
+        overflow: visible;
+    }
+
+    .logistics-entry-table table {
+        min-width: 0;
+    }
+
+    .logistics-entry-table thead {
+        display: none;
+    }
+
+    .logistics-entry-table tbody,
+    .logistics-entry-table tr,
+    .logistics-entry-table th,
+    .logistics-entry-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .logistics-entry-table tr {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .logistics-entry-table tr:last-child {
+        border-bottom: 0;
+    }
+
+    .logistics-entry-table th,
+    .logistics-entry-table td {
+        border: 0;
+        padding: 0;
+    }
+
+    .logistics-entry-table th {
+        margin-bottom: 6px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .logistics-entry-table td+th {
+        margin-top: 14px;
+    }
+
+    .logistics-entry-table input {
+        min-height: 44px;
+        min-width: 0;
+    }
+
+    .logistics-page .form-actions {
+        display: grid;
+        gap: 10px;
+    }
+
+    .logistics-page .form-actions .btn-primary {
+        width: 100%;
+    }
+
+    .logistics-page .seller-sheet-toolbar {
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 22px;
+    }
+
+    .logistics-page .seller-sheet-toolbar strong {
+        white-space: nowrap;
+    }
+
+    .logistics-page .seller-sheet-container {
+        margin-inline: -15px;
+        border-right: 0;
+        border-left: 0;
+    }
+}
+
 .dashboard-page .dashboard-grid .card:nth-child(1) {
     border-top: 5px solid #ff8a00;
 }

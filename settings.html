@@ -266,6 +266,51 @@
             </section>
 
 
+            <!-- CLOUD SYNC SETTINGS -->
+
+            <section class="card">
+
+                <h2>Cloud Sync (Supabase)</h2>
+
+                <p style="margin-top:0; color:#4b5563;">
+                    Add your Supabase project URL and anon key to make sales and records visible on other devices.
+                </p>
+
+                <form id="cloud-form">
+
+                    <div class="form-group">
+
+                        <label for="supabase-url">
+                            Supabase Project URL
+                        </label>
+
+                        <input type="url" id="supabase-url" placeholder="https://xyzcompany.supabase.co">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="supabase-anon-key">
+                            Supabase Anon Key
+                        </label>
+
+                        <input type="text" id="supabase-anon-key" placeholder="Paste anon key here">
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <button type="submit" class="btn-primary" data-admin-only>
+                            Save Cloud Sync Settings
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
             <!-- DISPLAY SETTINGS -->
 
             <section class="card">
@@ -376,6 +421,16 @@
                         "show-address"
                     );
 
+                const supabaseUrl =
+                    document.getElementById(
+                        "supabase-url"
+                    );
+
+                const supabaseAnonKey =
+                    document.getElementById(
+                        "supabase-anon-key"
+                    );
+
 
                 // ==============================
                 // PUT SAVED VALUES IN FORM
@@ -414,6 +469,10 @@
 
                 showAddress.checked =
                     settings.showAddress !== false;
+
+                const cloudConfig = POS.getCloudConfig();
+                supabaseUrl.value = cloudConfig.url || "";
+                supabaseAnonKey.value = cloudConfig.anonKey || "";
 
 
                 // ==============================
@@ -528,6 +587,37 @@
                         showMessage(
                             "Receipt settings saved successfully."
                         );
+
+                    }
+                );
+
+
+                // ==============================
+                // SAVE CLOUD SYNC SETTINGS
+                // ==============================
+
+                document.getElementById(
+                    "cloud-form"
+                ).addEventListener(
+                    "submit",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        const enabled = POS.setCloudConfig(
+                            supabaseUrl.value,
+                            supabaseAnonKey.value
+                        );
+
+                        if (enabled) {
+                            showMessage(
+                                "Cloud sync settings saved. Other devices can now sync after refresh."
+                            );
+                        } else {
+                            showMessage(
+                                "Cloud sync cleared. The app will keep using local storage."
+                            );
+                        }
 
                     }
                 );

@@ -26,6 +26,98 @@ const STORAGE = {
 
 };
 
+const CLOUD_STORAGE_KEYS = {
+    url: "lpgPosSupabaseUrl",
+    anonKey: "lpgPosSupabaseAnonKey"
+};
+
+function getCloudConfig() {
+    const url = String(localStorage.getItem(CLOUD_STORAGE_KEYS.url) || "").trim();
+    const anonKey = String(localStorage.getItem(CLOUD_STORAGE_KEYS.anonKey) || "").trim();
+    return {
+        url,
+        anonKey,
+        enabled: Boolean(url && anonKey && url.startsWith("https://"))
+    };
+}
+
+async function syncCloudFromRemote(type) {
+    const { url, anonKey, enabled } = getCloudConfig();
+    if (!enabled) return;
+
+    const key = STORAGE[type];
+    if (!key) return;
+
+    try {
+        const response = await fetch(`${url}/rest/v1/${key}?select=*`, {
+            method: "GET",
+            headers: {
+                apikey: anonKey,
+                Authorization: `Bearer ${anonKey}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Cloud read failed for ${type}: ${response.status}`);
+        }
+
+        const remoteData = await response.json();
+        if (Array.isArray(remoteData)) {
+            localStorage.setItem(key, JSON.stringify(remoteData));
+        }
+    } catch (error) {
+        console.warn("Cloud sync read skipped:", error);
+    }
+}
+
+async function syncCloudToRemote(type, data) {
+    const { url, anonKey, enabled } = getCloudConfig();
+    if (!enabled) return;
+
+    const key = STORAGE[type];
+    if (!key) return;
+
+    try {
+        const response = await fetch(`${url}/rest/v1/${key}?on_conflict=id`, {
+            method: "POST",
+            headers: {
+                apikey: anonKey,
+                Authorization: `Bearer ${anonKey}`,
+                "Content-Type": "application/json",
+                Prefer: "resolution=merge-duplicates"
+            },
+            body: JSON.stringify(Array.isArray(data) ? data : [data])
+        });
+
+        if (!response.ok) {
+            throw new Error(`Cloud write failed for ${type}: ${response.status}`);
+        }
+    } catch (error) {
+        console.warn("Cloud sync write skipped:", error);
+    }
+}
+
+function syncCloudStateOnStartup() {
+    Object.keys(STORAGE).forEach(type => syncCloudFromRemote(type));
+}
+
+function setCloudConfig(url, anonKey) {
+    const cleanUrl = String(url || "").trim();
+    const cleanKey = String(anonKey || "").trim();
+
+    if (!cleanUrl || !cleanKey) {
+        localStorage.removeItem(CLOUD_STORAGE_KEYS.url);
+        localStorage.removeItem(CLOUD_STORAGE_KEYS.anonKey);
+        return false;
+    }
+
+    localStorage.setItem(CLOUD_STORAGE_KEYS.url, cleanUrl);
+    localStorage.setItem(CLOUD_STORAGE_KEYS.anonKey, cleanKey);
+    syncCloudStateOnStartup();
+    return true;
+}
+
 
 // ==========================================
 // GET DATA
@@ -84,6 +176,7 @@ function saveData(type, data, options = {}) {
 
     if (isAdmin() || !isLoggedIn()) {
         localStorage.setItem(key, JSON.stringify(data));
+        syncCloudToRemote(type, data);
         return true;
     }
 
@@ -92,6 +185,7 @@ function saveData(type, data, options = {}) {
     const companyData = data.map(item => ({ ...item, companyId: company }));
     const otherCompanyData = allData.filter(item => item.companyId !== company);
     localStorage.setItem(key, JSON.stringify([...otherCompanyData, ...companyData]));
+    syncCloudToRemote(type, [...otherCompanyData, ...companyData]);
 
     return true;
 
@@ -1121,6 +1215,10 @@ window.POS = {
     recordInventoryMovement,
     updateData,
     deleteData,
+    setCloudConfig,
+    getCloudConfig,
+    syncCloudFromRemote,
+    syncCloudToRemote,
 
     generateId,
     formatMoney,
@@ -1149,6 +1247,9 @@ window.POS = {
 
 enforceLogin();
 initializeStorage();
+if (getCloudConfig().enabled) {
+    syncCloudStateOnStartup();
+}
 
 
 // ==========================================

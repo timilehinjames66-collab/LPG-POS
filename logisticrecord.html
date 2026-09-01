@@ -35,7 +35,7 @@
             </div>
 
             <section class="card">
-                <form id="logistics-form">
+                <form id="logistics-form" novalidate>
                     <div class="table-container logistics-entry-table">
                         <table class="pos-data-table">
                             <thead>
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <button class="btn-primary" type="submit">Save Trip Record</button>
+                        <button id="save-trip-button" class="btn-primary" type="submit">Save Trip Record</button>
                         <span class="sheet-status" id="logistics-status" role="status"></span>
                     </div>
                 </form>
@@ -148,6 +148,7 @@
         const tableBody = document.getElementById("logistics-table-body");
         const status = document.getElementById("logistics-status");
         const tripCount = document.getElementById("trip-count");
+        const saveTripButton = document.getElementById("save-trip-button");
         const fields = ["trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "union-cost", "trip-allowance", "tare-initial", "tare-final"];
 
         function currentCompany() {
@@ -185,6 +186,31 @@
                 .reduce((total, id) => total + Number(value(id) || 0), 0).toFixed(2);
         }
 
+        function updateSaveButtonState() {
+            const requiredFields = [
+                "trip-date",
+                "driver-name",
+                "truck-number",
+                "destination-from",
+                "destination-to",
+                "fuel-kg",
+                "fuel-naira",
+                "tare-initial",
+                "tare-final"
+            ];
+
+            const allRequiredFilled = requiredFields.every(id => {
+                const element = document.getElementById(id);
+                if (!element) return false;
+                const currentValue = element.value.trim ? element.value.trim() : String(element.value ?? "");
+                return currentValue !== "";
+            });
+
+            saveTripButton.disabled = !allRequiredFilled;
+            saveTripButton.style.opacity = allRequiredFilled ? "1" : "0.6";
+            saveTripButton.style.cursor = allRequiredFilled ? "pointer" : "not-allowed";
+        }
+
         function renderRecords() {
             const records = readRecords();
             tableBody.innerHTML = records.map((record, index) => `
@@ -213,7 +239,19 @@
             tripCount.textContent = `${records.length} trip${records.length === 1 ? "" : "s"}`;
         }
 
-        ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"].forEach(id => document.getElementById(id).addEventListener("input", updateTotal));
+        ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"].forEach(id => document.getElementById(id).addEventListener("input", () => {
+            updateTotal();
+            updateSaveButtonState();
+        }));
+
+        ["trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "tare-initial", "tare-final"].forEach(id => {
+            const field = document.getElementById(id);
+            if (field) {
+                field.addEventListener("input", updateSaveButtonState);
+                field.addEventListener("change", updateSaveButtonState);
+            }
+        });
+
         form.addEventListener("submit", event => {
             event.preventDefault();
             updateTotal();
@@ -268,6 +306,7 @@
 
         document.getElementById("trip-date").value = new Date().toISOString().slice(0, 10);
         updateTotal();
+        updateSaveButtonState();
         renderRecords();
     </script>
 </body>

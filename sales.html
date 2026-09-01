@@ -61,9 +61,14 @@
                             value="1">
                     </label>
                     <label>
+                        Unit price (NGN)
+                        <input id="checkout-unit-price" required inputmode="decimal" type="number" min="0" step="0.01"
+                            value="0">
+                    </label>
+                    <label>
                         Total paid (NGN)
-                        <input id="checkout-total" required inputmode="decimal" type="number" min="0" step="0.01"
-                            placeholder="0.00">
+                        <input id="checkout-total" readonly required inputmode="decimal" type="number" min="0"
+                            step="0.01" placeholder="0.00">
                     </label>
                     <label>
                         Customer
@@ -108,21 +113,21 @@
                         <input id="shift-till" required value="Till 1">
                     </label>
                     <label>
-                        Opening cash (NGN)
+                        Opening load sale (NGN)
                         <input id="opening-cash" required inputmode="decimal" type="number" min="0" step="0.01"
                             value="0">
                     </label>
                     <label>
-                        Opening gas (KG)
+                        Expecting KG
                         <input id="opening-kg" required inputmode="decimal" type="number" min="0" step="0.01" value="0">
                     </label>
                     <button class="primary-button" id="open-till" type="submit">Open Till</button>
                     <label>
-                        Closing cash (NGN)
+                        Closing load sale (NGN)
                         <input id="closing-cash" inputmode="decimal" type="number" min="0" step="0.01" value="0">
                     </label>
                     <label>
-                        Closing gas (KG)
+                        Expecting KG
                         <input id="closing-kg" inputmode="decimal" type="number" min="0" step="0.01" value="0">
                     </label>
                     <button class="btn-primary" id="close-till" type="button">Close Till</button>

@@ -1417,11 +1417,24 @@ if (salesTableBody) {
     }
 
     let checkoutPrintRequested = false;
+
+    const updateCheckoutTotal = () => {
+        const quantity = Number(document.getElementById("checkout-quantity")?.value || 0);
+        const unitPrice = Number(document.getElementById("checkout-unit-price")?.value || 0);
+        const subtotal = quantity * unitPrice;
+        const totalField = document.getElementById("checkout-total");
+        if (totalField) totalField.value = subtotal.toFixed(2);
+        return subtotal;
+    };
+
+    document.getElementById("checkout-quantity")?.addEventListener("input", updateCheckoutTotal);
+    document.getElementById("checkout-unit-price")?.addEventListener("input", updateCheckoutTotal);
+
     document.getElementById("checkout-form")?.addEventListener("submit", event => {
         event.preventDefault();
         const description = document.getElementById("checkout-description").value.trim();
         const quantity = document.getElementById("checkout-quantity").value;
-        const subtotal = Number(document.getElementById("checkout-total").value || 0);
+        const subtotal = updateCheckoutTotal();
         const discount = Number(document.getElementById("checkout-discount").value || 0);
         const taxRate = Number(document.getElementById("checkout-tax").value || 0);
         const taxable = Math.max(0, subtotal - discount);
@@ -1457,6 +1470,10 @@ if (salesTableBody) {
         recordAudit("sale_completed", sale);
         event.target.reset();
         document.getElementById("checkout-quantity").value = "1";
+        document.getElementById("checkout-unit-price").value = "0";
+        document.getElementById("checkout-discount").value = "0";
+        document.getElementById("checkout-tax").value = "0";
+        document.getElementById("checkout-total").value = "0.00";
         document.getElementById("checkout-till").value = till;
         document.getElementById("checkout-status").textContent = "Sale saved";
         renderSalesSheet();
@@ -1472,6 +1489,8 @@ if (salesTableBody) {
     document.querySelector("[data-print-receipt='true']")?.addEventListener("click", () => {
         checkoutPrintRequested = true;
     });
+
+    updateCheckoutTotal();
 
     const shiftForm = document.getElementById("till-form");
     const shiftTill = document.getElementById("shift-till");

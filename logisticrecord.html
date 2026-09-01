@@ -143,171 +143,208 @@
 
     <script src="script.js"></script>
     <script>
-        const logisticsKey = "mikelGasLogisticsRecords";
-        const form = document.getElementById("logistics-form");
-        const tableBody = document.getElementById("logistics-table-body");
-        const status = document.getElementById("logistics-status");
-        const tripCount = document.getElementById("trip-count");
-        const saveTripButton = document.getElementById("save-trip-button");
-        const fields = ["trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "union-cost", "trip-allowance", "tare-initial", "tare-final"];
+        (function initLogisticsForm() {
+            const logisticsKey = "mikelGasLogisticsRecords";
+            const form = document.getElementById("logistics-form");
+            const tableBody = document.getElementById("logistics-table-body");
+            if (!form || !tableBody) return;
 
-        function currentCompany() {
-            return window.POS.getCurrentUser()?.username || "local";
-        }
+            const status = document.getElementById("logistics-status");
+            const tripCount = document.getElementById("trip-count");
+            const saveTripButton = document.getElementById("save-trip-button");
 
-        function readRecords() {
-            try {
-                const records = JSON.parse(localStorage.getItem(logisticsKey) || "[]");
-                return window.POS.isAdmin() ? records : records.filter(record => record.companyId === currentCompany());
-            } catch {
-                return [];
+            function currentCompany() {
+                return window.POS && window.POS.getCurrentUser ? window.POS.getCurrentUser()?.username || "local" : "local";
             }
-        }
 
-        function saveRecords(records) {
-            const allRecords = JSON.parse(localStorage.getItem(logisticsKey) || "[]");
-            if (window.POS.isAdmin()) {
-                localStorage.setItem(logisticsKey, JSON.stringify(records));
-                return;
+            function readRecords() {
+                try {
+                    const records = JSON.parse(localStorage.getItem(logisticsKey) || "[]");
+                    if (!window.POS || !window.POS.isAdmin) {
+                        return records;
+                    }
+                    return window.POS.isAdmin() ? records : records.filter(record => record.companyId === currentCompany());
+                } catch {
+                    return [];
+                }
             }
-            const existingCompanyRecords = allRecords.filter(record => record.companyId === currentCompany());
-            if (records.length < existingCompanyRecords.length) return;
-            const companyRecords = records.map(record => ({ ...record, companyId: currentCompany() }));
-            const otherRecords = allRecords.filter(record => record.companyId !== currentCompany());
-            localStorage.setItem(logisticsKey, JSON.stringify([...otherRecords, ...companyRecords]));
-        }
 
-        function value(id) {
-            return document.getElementById(id).value;
-        }
+            function saveRecords(records) {
+                const allRecords = JSON.parse(localStorage.getItem(logisticsKey) || "[]");
+                if (window.POS && window.POS.isAdmin && window.POS.isAdmin()) {
+                    localStorage.setItem(logisticsKey, JSON.stringify(records));
+                    return;
+                }
+                const existingCompanyRecords = allRecords.filter(record => record.companyId === currentCompany());
+                if (records.length < existingCompanyRecords.length) return;
+                const companyRecords = records.map(record => ({ ...record, companyId: currentCompany() }));
+                const otherRecords = allRecords.filter(record => record.companyId !== currentCompany());
+                localStorage.setItem(logisticsKey, JSON.stringify([...otherRecords, ...companyRecords]));
+            }
 
-        function updateTotal() {
-            document.getElementById("total-cost").value = ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"]
-                .reduce((total, id) => total + Number(value(id) || 0), 0).toFixed(2);
-        }
-
-        function updateSaveButtonState() {
-            const requiredFields = [
-                "trip-date",
-                "driver-name",
-                "truck-number",
-                "destination-from",
-                "destination-to",
-                "fuel-kg",
-                "fuel-naira",
-                "tare-initial",
-                "tare-final"
-            ];
-
-            const allRequiredFilled = requiredFields.every(id => {
+            function value(id) {
                 const element = document.getElementById(id);
-                if (!element) return false;
-                const currentValue = element.value.trim ? element.value.trim() : String(element.value ?? "");
-                return currentValue !== "";
+                return element ? element.value : "";
+            }
+
+            function updateTotal() {
+                const totalField = document.getElementById("total-cost");
+                if (!totalField) return 0;
+                const total = ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"]
+                    .reduce((sum, id) => sum + Number(value(id) || 0), 0);
+                totalField.value = total.toFixed(2);
+                return total;
+            }
+
+            window.updateTotal = updateTotal;
+
+            function updateSaveButtonState() {
+                if (!saveTripButton) return;
+                saveTripButton.disabled = false;
+                saveTripButton.style.opacity = "1";
+                saveTripButton.style.cursor = "pointer";
+            }
+
+            window.updateSaveButtonState = updateSaveButtonState;
+
+            function renderRecords() {
+                const records = readRecords();
+                if (!window.POS || !window.POS.escapeHTML || !window.POS.formatMoney || !window.POS.isAdmin) {
+                    tableBody.innerHTML = "";
+                    tripCount.textContent = `${records.length} trip${records.length === 1 ? "" : "s"}`;
+                    return;
+                }
+
+                tableBody.innerHTML = records.map((record, index) => `
+                    <tr data-company-id="${window.POS.escapeHTML(record.companyId || "Unknown")}">
+                        <td>${window.POS.escapeHTML(record.date)}</td>
+                        <td>${window.POS.escapeHTML(record.driver)}</td>
+                        <td>${window.POS.escapeHTML(record.truck)}</td>
+                        <td>${window.POS.escapeHTML(record.from)}</td>
+                        <td>${window.POS.escapeHTML(record.to)}</td>
+                        <td>${window.POS.escapeHTML(record.fuelKg)}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.fuelNaira))}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.purchaseCost))}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.unionCost))}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.allowance))}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.impromptuExpense || 0))}</td>
+                        <td>${window.POS.escapeHTML(record.impromptuReason || "")}</td>
+                        <td>${window.POS.escapeHTML(record.tareInitial)}</td>
+                        <td>${window.POS.escapeHTML(record.tareFinal)}</td>
+                        <td>${window.POS.escapeHTML(record.weightDifference)}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.totalCost))}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCost))}</td>
+                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCostKg))}</td>
+                        <td>${window.POS.isAdmin() ? `<button class="sheet-delete" type="button" data-index="${index}">Delete</button>` : "Input only"}</td>
+                    </tr>
+                `).join("") || `<tr><td colspan="19" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
+
+                tripCount.textContent = `${records.length} trip${records.length === 1 ? "" : "s"}`;
+            }
+
+            ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"].forEach(id => {
+                const field = document.getElementById(id);
+                if (field) {
+                    field.addEventListener("input", () => {
+                        updateTotal();
+                        updateSaveButtonState();
+                    });
+                }
             });
 
-            saveTripButton.disabled = !allRequiredFilled;
-            saveTripButton.style.opacity = allRequiredFilled ? "1" : "0.6";
-            saveTripButton.style.cursor = allRequiredFilled ? "pointer" : "not-allowed";
-        }
+            ["trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "tare-initial", "tare-final"].forEach(id => {
+                const field = document.getElementById(id);
+                if (field) {
+                    field.addEventListener("input", updateSaveButtonState);
+                    field.addEventListener("change", updateSaveButtonState);
+                }
+            });
 
-        function renderRecords() {
-            const records = readRecords();
-            tableBody.innerHTML = records.map((record, index) => `
-                <tr data-company-id="${window.POS.escapeHTML(record.companyId || "Unknown")}">
-                    <td>${window.POS.escapeHTML(record.date)}</td>
-                    <td>${window.POS.escapeHTML(record.driver)}</td>
-                    <td>${window.POS.escapeHTML(record.truck)}</td>
-                    <td>${window.POS.escapeHTML(record.from)}</td>
-                    <td>${window.POS.escapeHTML(record.to)}</td>
-                    <td>${window.POS.escapeHTML(record.fuelKg)}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.fuelNaira))}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.purchaseCost))}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.unionCost))}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.allowance))}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.impromptuExpense || 0))}</td>
-                    <td>${window.POS.escapeHTML(record.impromptuReason || "")}</td>
-                    <td>${window.POS.escapeHTML(record.tareInitial)}</td>
-                    <td>${window.POS.escapeHTML(record.tareFinal)}</td>
-                    <td>${window.POS.escapeHTML(record.weightDifference)}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.totalCost))}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCost))}</td>
-                    <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCostKg))}</td>
-                    <td>${window.POS.isAdmin() ? `<button class="sheet-delete" type="button" data-index="${index}">Delete</button>` : "Input only"}</td>
-                </tr>
-            `).join("") || `<tr><td colspan="19" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
-            tripCount.textContent = `${records.length} trip${records.length === 1 ? "" : "s"}`;
-        }
+            form.addEventListener("submit", event => {
+                event.preventDefault();
+                const requiredFields = [
+                    ["trip-date", "Date"],
+                    ["driver-name", "Driver Name"],
+                    ["truck-number", "Truck Number"],
+                    ["destination-from", "Destination From"],
+                    ["destination-to", "Destination To"],
+                    ["fuel-kg", "Fuel Quantity"],
+                    ["fuel-naira", "Fuel Cost"],
+                    ["tare-initial", "Truck Tare Weight - Initial"],
+                    ["tare-final", "Truck Tare Weight - Final"]
+                ];
 
-        ["fuel-naira", "union-cost", "trip-allowance", "impromptu-expense"].forEach(id => document.getElementById(id).addEventListener("input", () => {
+                const missingField = requiredFields.find(([id]) => !((document.getElementById(id)?.value || "").trim()));
+                if (missingField) {
+                    const [id, label] = missingField;
+                    if (status) status.textContent = `${label} is required`;
+                    const field = document.getElementById(id);
+                    if (field) field.focus();
+                    return;
+                }
+
+                updateTotal();
+                const impromptuExpense = Number(value("impromptu-expense") || 0);
+                const impromptuReason = (value("impromptu-reason") || "").trim();
+                if (impromptuExpense > 0 && !impromptuReason) {
+                    if (status) status.textContent = "Please explain the impromptu expense";
+                    const reasonField = document.getElementById("impromptu-reason");
+                    if (reasonField) reasonField.focus();
+                    return;
+                }
+
+                const record = {
+                    id: window.POS && window.POS.generateId ? window.POS.generateId("TRIP") : Date.now().toString(),
+                    date: value("trip-date"),
+                    driver: (value("driver-name") || "").trim(),
+                    truck: (value("truck-number") || "").trim(),
+                    from: (value("destination-from") || "").trim(),
+                    to: (value("destination-to") || "").trim(),
+                    fuelKg: Number(value("fuel-kg") || 0),
+                    fuelNaira: Number(value("fuel-naira") || 0),
+                    purchaseCost: 0,
+                    unionCost: Number(value("union-cost") || 0),
+                    allowance: Number(value("trip-allowance") || 0),
+                    impromptuExpense,
+                    impromptuReason,
+                    tareInitial: Number(value("tare-initial") || 0),
+                    tareFinal: Number(value("tare-final") || 0),
+                    weightDifference: Number(value("tare-initial") || 0) - Number(value("tare-final") || 0),
+                    totalCost: Number(value("total-cost") || 0),
+                    landingCost: Number(value("total-cost") || 0),
+                    landingCostKg: Number(value("fuel-kg") || 0)
+                        ? Number(value("total-cost") || 0) / Number(value("fuel-kg") || 1)
+                        : 0,
+                    companyId: currentCompany()
+                };
+
+                const records = readRecords();
+                records.push(record);
+                saveRecords(records);
+                form.reset();
+                const tripDate = document.getElementById("trip-date");
+                if (tripDate) tripDate.value = new Date().toISOString().slice(0, 10);
+                const totalField = document.getElementById("total-cost");
+                if (totalField) totalField.value = "0.00";
+                if (status) status.textContent = "Trip record saved";
+                renderRecords();
+            });
+
+            tableBody.addEventListener("click", event => {
+                const deleteButton = event.target.closest(".sheet-delete");
+                if (!deleteButton || !window.POS || !window.POS.isAdmin || !window.POS.isAdmin()) return;
+                const records = readRecords();
+                records.splice(Number(deleteButton.dataset.index), 1);
+                saveRecords(records);
+                renderRecords();
+            });
+
+            const tripDate = document.getElementById("trip-date");
+            if (tripDate) tripDate.value = new Date().toISOString().slice(0, 10);
             updateTotal();
             updateSaveButtonState();
-        }));
-
-        ["trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "tare-initial", "tare-final"].forEach(id => {
-            const field = document.getElementById(id);
-            if (field) {
-                field.addEventListener("input", updateSaveButtonState);
-                field.addEventListener("change", updateSaveButtonState);
-            }
-        });
-
-        form.addEventListener("submit", event => {
-            event.preventDefault();
-            updateTotal();
-            const impromptuExpense = Number(value("impromptu-expense") || 0);
-            const impromptuReason = value("impromptu-reason").trim();
-            if (impromptuExpense > 0 && !impromptuReason) {
-                status.textContent = "Please explain the impromptu expense";
-                document.getElementById("impromptu-reason").focus();
-                return;
-            }
-            const record = {
-                id: window.POS.generateId("TRIP"),
-                date: value("trip-date"),
-                driver: value("driver-name").trim(),
-                truck: value("truck-number").trim(),
-                from: value("destination-from").trim(),
-                to: value("destination-to").trim(),
-                fuelKg: Number(value("fuel-kg")),
-                fuelNaira: Number(value("fuel-naira")),
-                purchaseCost: 0,
-                unionCost: Number(value("union-cost") || 0),
-                allowance: Number(value("trip-allowance") || 0),
-                impromptuExpense,
-                impromptuReason,
-                tareInitial: Number(value("tare-initial")),
-                tareFinal: Number(value("tare-final")),
-                weightDifference: Number(value("tare-initial")) - Number(value("tare-final")),
-                totalCost: Number(value("total-cost")),
-                landingCost: Number(value("total-cost")),
-                landingCostKg: Number(value("fuel-kg") || 0)
-                    ? Number(value("total-cost")) / Number(value("fuel-kg"))
-                    : 0,
-                companyId: currentCompany()
-            };
-            const records = readRecords();
-            records.push(record);
-            saveRecords(records);
-            form.reset();
-            document.getElementById("trip-date").value = new Date().toISOString().slice(0, 10);
-            document.getElementById("total-cost").value = "0.00";
-            status.textContent = "Trip record saved";
             renderRecords();
-        });
-
-        tableBody.addEventListener("click", event => {
-            if (!event.target.matches(".sheet-delete") || !window.POS.isAdmin()) return;
-            const records = readRecords();
-            records.splice(Number(event.target.dataset.index), 1);
-            saveRecords(records);
-            renderRecords();
-        });
-
-        document.getElementById("trip-date").value = new Date().toISOString().slice(0, 10);
-        updateTotal();
-        updateSaveButtonState();
-        renderRecords();
+        })();
     </script>
 </body>
 

@@ -495,7 +495,7 @@ tbody tr:hover {
         margin: 0;
     }
 
-    body:not(.receipt-printing) {
+    body {
         background: #fff;
     }
 
@@ -511,6 +511,7 @@ tbody tr:hover {
     body:not(.receipt-printing) .main-content {
         padding: 0;
         overflow: visible;
+        flex: 1;
     }
 
     body:not(.receipt-printing) .seller-sheet-container {
@@ -519,12 +520,20 @@ tbody tr:hover {
 
     body:not(.receipt-printing) .seller-sheet {
         width: 100%;
-        font-size: 9px;
+        font-size: 10px;
+        border-collapse: collapse;
     }
 
     body:not(.receipt-printing) .seller-sheet th,
     body:not(.receipt-printing) .seller-sheet td {
-        padding: 4px;
+        padding: 6px 4px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    body:not(.receipt-printing) .seller-sheet th {
+        background: #f5f5f5;
+        font-weight: bold;
     }
 }
 

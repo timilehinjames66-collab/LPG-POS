@@ -501,17 +501,23 @@ tbody tr:hover {
 
     body:not(.receipt-printing) .header,
     body:not(.receipt-printing) .sidebar,
-    body:not(.receipt-printing) .page-header,
     body:not(.receipt-printing) .card,
     body:not(.receipt-printing) .seller-sheet-toolbar,
     body:not(.receipt-printing) .form-actions {
         display: none !important;
     }
 
+    body:not(.receipt-printing) .page-header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     body:not(.receipt-printing) .main-content {
-        padding: 0;
+        padding: 20px;
         overflow: visible;
         flex: 1;
+        max-width: 100%;
     }
 
     body:not(.receipt-printing) .seller-sheet-container {

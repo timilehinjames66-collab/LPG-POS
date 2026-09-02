@@ -430,31 +430,35 @@ tbody tr:hover {
 
 #pos-print-receipt {
     display: none;
+    width: 80mm;
+    padding: 3mm;
+    overflow-wrap: anywhere;
 }
 
 #pos-print-receipt h1 {
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     text-align: center;
-    font-size: 22px;
+    font-size: 18px;
 }
 
 #pos-print-receipt .message {
-    margin: 0 0 18px;
+    margin: 0 0 8px;
     text-align: center;
-    line-height: 1.5;
+    line-height: 1.25;
     white-space: normal;
 }
 
 #pos-print-receipt .rule {
     border-top: 1px dashed #555;
-    margin: 12px 0;
+    margin: 8px 0;
 }
 
 #pos-print-receipt .line {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
-    padding: 5px 0;
+    gap: 10px;
+    padding: 3px 0;
+    line-height: 1.2;
 }
 
 #pos-print-receipt .label {
@@ -462,14 +466,14 @@ tbody tr:hover {
 }
 
 #pos-print-receipt .total {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
 }
 
 #pos-print-receipt .footer {
-    margin-top: 22px;
+    margin-top: 12px;
     text-align: center;
-    line-height: 1.5;
+    line-height: 1.25;
 }
 
 @media print {
@@ -479,11 +483,48 @@ tbody tr:hover {
 
     body.receipt-printing #pos-print-receipt {
         display: block;
-        width: 100%;
-        max-width: 360px;
+        width: 80mm;
+        max-width: 80mm;
         margin: 0 auto;
         color: #111;
-        font: 14px Arial, sans-serif;
+        font: 11px Arial, sans-serif;
+    }
+
+    @page {
+        size: 80mm auto;
+        margin: 0;
+    }
+
+    body:not(.receipt-printing) {
+        background: #fff;
+    }
+
+    body:not(.receipt-printing) .header,
+    body:not(.receipt-printing) .sidebar,
+    body:not(.receipt-printing) .page-header,
+    body:not(.receipt-printing) .card,
+    body:not(.receipt-printing) .seller-sheet-toolbar,
+    body:not(.receipt-printing) .form-actions {
+        display: none !important;
+    }
+
+    body:not(.receipt-printing) .main-content {
+        padding: 0;
+        overflow: visible;
+    }
+
+    body:not(.receipt-printing) .seller-sheet-container {
+        overflow: visible;
+    }
+
+    body:not(.receipt-printing) .seller-sheet {
+        width: 100%;
+        font-size: 9px;
+    }
+
+    body:not(.receipt-printing) .seller-sheet th,
+    body:not(.receipt-printing) .seller-sheet td {
+        padding: 4px;
     }
 }
 

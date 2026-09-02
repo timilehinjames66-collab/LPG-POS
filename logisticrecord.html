@@ -32,6 +32,9 @@
                     <h2>Logistics Trip Record</h2>
                     <p>Record every truck movement and delivery cost.</p>
                 </div>
+                <div class="action-bar">
+                    <button class="btn-primary" id="print-logistics" type="button">Print Records</button>
+                </div>
             </div>
 
             <section class="card">
@@ -129,8 +132,6 @@
                             <th>Fuel Cost NGN</th>
                             <th>Gas Amount KG</th>
                             <th>Gas Cost NGN</th>
-                            <th>Gas Amount KG</th>
-                            <th>Gas Cost NGN</th>
                             <th>Purchase NGN</th>
                             <th>Union NGN</th>
                             <th>Allowance NGN</th>
@@ -162,6 +163,9 @@
             const status = document.getElementById("logistics-status");
             const tripCount = document.getElementById("trip-count");
             const saveTripButton = document.getElementById("save-trip-button");
+            const printLogisticsButton = document.getElementById("print-logistics");
+
+            printLogisticsButton?.addEventListener("click", () => window.print());
 
             function currentCompany() {
                 return window.POS && window.POS.getCurrentUser ? window.POS.getCurrentUser()?.username || "local" : "local";

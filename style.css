@@ -445,35 +445,35 @@ tbody tr:hover {
 
 #pos-print-receipt {
     display: none;
-    width: 80mm;
-    padding: 3mm;
+    width: 58mm;
+    padding: 2mm;
     overflow-wrap: anywhere;
 }
 
 #pos-print-receipt h1 {
-    margin: 0 0 8px;
+    margin: 0 0 5px;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 #pos-print-receipt .message {
-    margin: 0 0 8px;
+    margin: 0 0 5px;
     text-align: center;
-    line-height: 1.25;
+    line-height: 1.1;
     white-space: normal;
 }
 
 #pos-print-receipt .rule {
     border-top: 1px dashed #555;
-    margin: 8px 0;
+    margin: 5px 0;
 }
 
 #pos-print-receipt .line {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    padding: 3px 0;
-    line-height: 1.2;
+    gap: 6px;
+    padding: 2px 0;
+    line-height: 1.1;
 }
 
 #pos-print-receipt .label {
@@ -481,14 +481,14 @@ tbody tr:hover {
 }
 
 #pos-print-receipt .total {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
 }
 
 #pos-print-receipt .footer {
-    margin-top: 12px;
+    margin-top: 8px;
     text-align: center;
-    line-height: 1.25;
+    line-height: 1.1;
 }
 
 @media print {
@@ -498,15 +498,15 @@ tbody tr:hover {
 
     body.receipt-printing #pos-print-receipt {
         display: block;
-        width: 80mm;
-        max-width: 80mm;
+        width: 58mm;
+        max-width: 58mm;
         margin: 0 auto;
         color: #111;
-        font: 11px Arial, sans-serif;
+        font: 10px Arial, sans-serif;
     }
 
     @page {
-        size: 80mm auto;
+        size: 58mm auto;
         margin: 0;
     }
 

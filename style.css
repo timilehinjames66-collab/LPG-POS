@@ -196,6 +196,21 @@ h4 {
     gap: 10px;
 }
 
+.logistics-depot-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.logistics-depot-field label {
+    font-weight: 700;
+}
+
+.logistics-depot-field input {
+    width: min(280px, 100%);
+}
+
 button,
 input,
 select {

@@ -39,6 +39,10 @@
 
             <section class="card">
                 <form id="logistics-form" novalidate>
+                    <div class="logistics-depot-field">
+                        <label for="depot">Depot</label>
+                        <input id="depot" required placeholder="Enter depot">
+                    </div>
                     <div class="table-container logistics-entry-table">
                         <table class="pos-data-table">
                             <thead>
@@ -71,8 +75,8 @@
                                 <tr>
                                     <th scope="row"><label for="fuel-naira">Fuel Cost (NGN)</label></th>
                                     <td><input id="fuel-naira" type="number" min="0" step="0.01" required></td>
-                                    <th scope="row"><label for="gas-amount">Gas Amount (kg/ton)</label></th>
-                                    <td><input id="gas-amount" type="number" min="0" step="0.01" value="0"></td>
+                                    <th scope="row"><label for="gas-quantity">Gas Quantity (kg/ton)</label></th>
+                                    <td><input id="gas-quantity" type="number" min="0" step="0.01" value="0"></td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label for="gas-cost">Gas Cost (NGN)</label></th>
@@ -123,6 +127,7 @@
                 <table class="pos-data-table seller-sheet">
                     <thead>
                         <tr>
+                            <th>Depot</th>
                             <th>Date</th>
                             <th>Driver</th>
                             <th>Truck No.</th>
@@ -130,7 +135,7 @@
                             <th>To</th>
                             <th>Fuel Quantity KG</th>
                             <th>Fuel Cost NGN</th>
-                            <th>Gas Amount kg/ton</th>
+                            <th>Gas Quantity kg/ton</th>
                             <th>Gas Cost NGN</th>
                             <th>Purchase NGN</th>
                             <th>Union NGN</th>
@@ -231,6 +236,7 @@
 
                 tableBody.innerHTML = records.map((record, index) => `
                     <tr data-company-id="${window.POS.escapeHTML(record.companyId || "Unknown")}">
+                        <td>${window.POS.escapeHTML(record.depot || "")}</td>
                         <td>${window.POS.escapeHTML(record.date)}</td>
                         <td>${window.POS.escapeHTML(record.driver)}</td>
                         <td>${window.POS.escapeHTML(record.truck)}</td>
@@ -238,7 +244,7 @@
                         <td>${window.POS.escapeHTML(record.to)}</td>
                         <td>${window.POS.escapeHTML(record.fuelKg)}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.fuelNaira))}</td>
-                        <td>${window.POS.escapeHTML(record.gasAmount ?? "")}</td>
+                        <td>${window.POS.escapeHTML(record.gasQuantity ?? record.gasAmount ?? "")}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.gasCost ?? 0))}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.purchaseCost))}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.unionCost))}</td>
@@ -268,7 +274,7 @@
                 }
             });
 
-            ["trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "gas-amount", "gas-cost", "tare-initial", "tare-final"].forEach(id => {
+            ["depot", "trip-date", "driver-name", "truck-number", "destination-from", "destination-to", "fuel-kg", "fuel-naira", "gas-quantity", "gas-cost", "tare-initial", "tare-final"].forEach(id => {
                 const field = document.getElementById(id);
                 if (field) {
                     field.addEventListener("input", updateSaveButtonState);
@@ -279,6 +285,7 @@
             form.addEventListener("submit", event => {
                 event.preventDefault();
                 const requiredFields = [
+                    ["depot", "Depot"],
                     ["trip-date", "Date"],
                     ["driver-name", "Driver Name"],
                     ["truck-number", "Truck Number"],
@@ -286,7 +293,7 @@
                     ["destination-to", "Destination To"],
                     ["fuel-kg", "Fuel Quantity"],
                     ["fuel-naira", "Fuel Cost"],
-                    ["gas-amount", "Gas Amount"],
+                    ["gas-quantity", "Gas Quantity"],
                     ["gas-cost", "Gas Cost"],
                     ["tare-initial", "Truck Tare Weight - Initial"],
                     ["tare-final", "Truck Tare Weight - Final"]
@@ -313,6 +320,7 @@
 
                 const record = {
                     id: window.POS && window.POS.generateId ? window.POS.generateId("TRIP") : Date.now().toString(),
+                    depot: (value("depot") || "").trim(),
                     date: value("trip-date"),
                     driver: (value("driver-name") || "").trim(),
                     truck: (value("truck-number") || "").trim(),
@@ -320,7 +328,7 @@
                     to: (value("destination-to") || "").trim(),
                     fuelKg: Number(value("fuel-kg") || 0),
                     fuelNaira: Number(value("fuel-naira") || 0),
-                    gasAmount: Number(value("gas-amount") || 0),
+                    gasQuantity: Number(value("gas-quantity") || 0),
                     gasCost: Number(value("gas-cost") || 0),
                     purchaseCost: 0,
                     unionCost: Number(value("union-cost") || 0),

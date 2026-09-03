@@ -37,12 +37,13 @@
                 </div>
             </div>
 
-            <section class="card">
-                <form id="logistics-form" novalidate>
-                    <div class="logistics-depot-field">
-                        <label for="depot">Depo</label>
-                        <input id="depot" required placeholder="Enter depot">
-                    </div>
+            <form id="logistics-form" novalidate>
+                <div class="logistics-depot-field">
+                    <label for="depot">Depo</label>
+                    <input id="depot" required placeholder="Enter depot">
+                </div>
+
+                <section class="card">
                     <div class="table-container logistics-entry-table">
                         <table class="pos-data-table">
                             <thead>
@@ -111,12 +112,13 @@
                         </table>
                     </div>
 
-                    <div class="form-actions">
-                        <button id="save-trip-button" class="btn-primary" type="submit">Save Trip Record</button>
-                        <span class="sheet-status" id="logistics-status" role="status"></span>
-                    </div>
-                </form>
-            </section>
+                </section>
+
+                <div class="form-actions">
+                    <button id="save-trip-button" class="btn-primary" type="submit">Save Trip Record</button>
+                    <span class="sheet-status" id="logistics-status" role="status"></span>
+                </div>
+            </form>
 
             <div class="seller-sheet-toolbar">
                 <span class="sheet-status">Saved logistics records</span>

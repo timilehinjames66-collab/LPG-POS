@@ -1,10 +1,11 @@
-const CACHE_NAME = "lpg-pos-v8";
+const CACHE_NAME = "lpg-pos-v9";
 const APP_FILES = [
     "./",
     "./index.html",
     "./index.htm",
     "./dashboard.html",
     "./logout.html",
+    "./logisticrecord.html",
     "./customers.html",
     "./invoices.html",
     "./product.html",
@@ -42,6 +43,19 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
     if (event.request.method !== "GET") return;
+
+    if (event.request.mode === "navigate") {
+        event.respondWith(
+            fetch(event.request)
+                .then(networkResponse => {
+                    const responseCopy = networkResponse.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseCopy));
+                    return networkResponse;
+                })
+                .catch(() => caches.match(event.request))
+        );
+        return;
+    }
 
     event.respondWith(
         caches.match(event.request)

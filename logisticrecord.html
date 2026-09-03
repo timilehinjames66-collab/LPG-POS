@@ -172,7 +172,47 @@
             const saveTripButton = document.getElementById("save-trip-button");
             const printLogisticsButton = document.getElementById("print-logistics");
 
-            printLogisticsButton?.addEventListener("click", () => window.print());
+            function printLogisticsRecords() {
+                const records = readRecords();
+                const existingReceipt = document.getElementById("logistics-print-receipt");
+                existingReceipt?.remove();
+                const receipt = document.createElement("main");
+                receipt.id = "logistics-print-receipt";
+                receipt.innerHTML = `
+                    <h1>Logistics Record</h1>
+                    ${records.map(record => `
+                        <section class="logistics-print-trip">
+                            <div class="receipt-rule"></div>
+                            <div class="receipt-line"><strong>Depo</strong><span>${window.POS.escapeHTML(record.depot || "-")}</span></div>
+                            <div class="receipt-line"><strong>Date</strong><span>${window.POS.escapeHTML(record.date || "-")}</span></div>
+                            <div class="receipt-line"><strong>Driver</strong><span>${window.POS.escapeHTML(record.driver || "-")}</span></div>
+                            <div class="receipt-line"><strong>Truck</strong><span>${window.POS.escapeHTML(record.truck || "-")}</span></div>
+                            <div class="receipt-line"><strong>Route</strong><span>${window.POS.escapeHTML(`${record.from || "-"} to ${record.to || "-"}`)}</span></div>
+                            <div class="receipt-line"><strong>Fuel Qty</strong><span>${window.POS.escapeHTML(record.fuelKg ?? "-")} KG</span></div>
+                            <div class="receipt-line"><strong>Fuel Cost</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.fuelNaira || 0))}</span></div>
+                            <div class="receipt-line"><strong>Gas Qty</strong><span>${window.POS.escapeHTML(record.gasQuantity ?? "-")} kg/ton</span></div>
+                            <div class="receipt-line"><strong>Gas Cost</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.gasCost || 0))}</span></div>
+                            <div class="receipt-line"><strong>Union</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.unionCost || 0))}</span></div>
+                            <div class="receipt-line"><strong>Allowance</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.allowance || 0))}</span></div>
+                            <div class="receipt-line"><strong>Extra Expense</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.impromptuExpense || 0))}</span></div>
+                            ${record.impromptuReason ? `<div class="receipt-line"><strong>Reason</strong><span>${window.POS.escapeHTML(record.impromptuReason)}</span></div>` : ""}
+                            <div class="receipt-line"><strong>Tare</strong><span>${window.POS.escapeHTML(record.tareInitial ?? "-")} / ${window.POS.escapeHTML(record.tareFinal ?? "-")} KG</span></div>
+                            <div class="receipt-total"><strong>Total Cost</strong><strong>${window.POS.escapeHTML(window.POS.formatMoney(record.totalCost || 0))}</strong></div>
+                        </section>
+                    `).join("") || `<p class="receipt-empty">No logistics records yet.</p>`}
+                `;
+                document.body.appendChild(receipt);
+                document.body.classList.add("logistics-printing");
+                const cleanUp = () => {
+                    document.body.classList.remove("logistics-printing");
+                    receipt.remove();
+                    window.removeEventListener("afterprint", cleanUp);
+                };
+                window.addEventListener("afterprint", cleanUp);
+                setTimeout(() => window.print(), 100);
+            }
+
+            printLogisticsButton?.addEventListener("click", printLogisticsRecords);
 
             function currentCompany() {
                 return window.POS && window.POS.getCurrentUser ? window.POS.getCurrentUser()?.username || "local" : "local";

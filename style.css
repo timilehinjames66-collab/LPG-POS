@@ -491,6 +491,68 @@ tbody tr:hover {
     line-height: 1.1;
 }
 
+#logistics-print-receipt {
+    display: none;
+}
+
+@media print {
+    body.logistics-printing>*:not(#logistics-print-receipt) {
+        display: none !important;
+    }
+
+    body.logistics-printing #logistics-print-receipt {
+        display: block;
+        width: 58mm;
+        max-width: 58mm;
+        margin: 0 auto;
+        padding: 2mm;
+        color: #111;
+        font: 10px Arial, sans-serif;
+        overflow-wrap: anywhere;
+    }
+
+    body.logistics-printing #logistics-print-receipt h1 {
+        margin: 0 0 5px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    body.logistics-printing .logistics-print-trip {
+        break-inside: avoid;
+    }
+
+    body.logistics-printing .receipt-rule {
+        border-top: 1px dashed #555;
+        margin: 5px 0;
+    }
+
+    body.logistics-printing .receipt-line,
+    body.logistics-printing .receipt-total {
+        display: flex;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 2px 0;
+        line-height: 1.1;
+    }
+
+    body.logistics-printing .receipt-line strong:first-child {
+        flex: 0 0 auto;
+    }
+
+    body.logistics-printing .receipt-line span {
+        text-align: right;
+    }
+
+    body.logistics-printing .receipt-total {
+        margin-top: 3px;
+        font-size: 13px;
+    }
+
+    body.logistics-printing .receipt-empty {
+        text-align: center;
+    }
+}
+
 @media print {
     body.receipt-printing>*:not(#pos-print-receipt) {
         display: none !important;

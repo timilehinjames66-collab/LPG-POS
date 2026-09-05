@@ -505,16 +505,16 @@ tbody tr:hover {
         width: 58mm;
         max-width: 58mm;
         margin: 0 auto;
-        padding: 2mm;
+        padding: 1mm;
         color: #111;
-        font: 10px Arial, sans-serif;
+        font: 9px Arial, sans-serif;
         overflow-wrap: anywhere;
     }
 
     body.logistics-printing #logistics-print-receipt h1 {
-        margin: 0 0 5px;
+        margin: 0 0 3px;
         text-align: center;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     body.logistics-printing .logistics-print-trip {
@@ -523,16 +523,16 @@ tbody tr:hover {
 
     body.logistics-printing .receipt-rule {
         border-top: 1px dashed #555;
-        margin: 5px 0;
+        margin: 3px 0;
     }
 
     body.logistics-printing .receipt-line,
     body.logistics-printing .receipt-total {
         display: flex;
         justify-content: space-between;
-        gap: 6px;
-        padding: 2px 0;
-        line-height: 1.1;
+        gap: 4px;
+        padding: 1px 0;
+        line-height: 1;
     }
 
     body.logistics-printing .receipt-line strong:first-child {
@@ -544,12 +544,21 @@ tbody tr:hover {
     }
 
     body.logistics-printing .receipt-total {
-        margin-top: 3px;
-        font-size: 13px;
+        margin-top: 2px;
+        font-size: 12px;
     }
 
     body.logistics-printing .receipt-empty {
         text-align: center;
+    }
+
+    body.logistics-printing .logistics-print-trip {
+        page-break-inside: avoid;
+        page-break-after: avoid;
+    }
+
+    body.logistics-printing #logistics-print-receipt {
+        page-break-after: avoid;
     }
 }
 
@@ -568,7 +577,7 @@ tbody tr:hover {
     }
 
     @page {
-        size: 58mm auto;
+        size: 58mm 180mm;
         margin: 0;
     }
 

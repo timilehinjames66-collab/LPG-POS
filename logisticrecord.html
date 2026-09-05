@@ -76,7 +76,7 @@
                                 <tr>
                                     <th scope="row"><label for="fuel-naira">Fuel Cost (NGN)</label></th>
                                     <td><input id="fuel-naira" type="number" min="0" step="0.01" required></td>
-                                    <th scope="row"><label for="gas-quantity">Gas Quantity (kg/ton)</label></th>
+                                    <th scope="row"><label for="gas-quantity">Gas Quantity (liters)</label></th>
                                     <td><input id="gas-quantity" type="number" min="0" step="0.01" value="0"></td>
                                 </tr>
                                 <tr>
@@ -105,7 +105,7 @@
                                     <th scope="row"><label for="tare-final">Truck Tare Weight - Final (KG)</label>
                                     </th>
                                     <td><input id="tare-final" type="number" min="0" step="0.01" required></td>
-                                    <th scope="row"><label for="total-cost">Total Cost (NGN)</label></th>
+                                    <th scope="row"><label for="total-cost">Landing Cost (NGN)</label></th>
                                     <td><input id="total-cost" type="number" readonly></td>
                                 </tr>
                             </tbody>
@@ -137,7 +137,7 @@
                             <th>To</th>
                             <th>Fuel Quantity KG</th>
                             <th>Fuel Cost NGN</th>
-                            <th>Gas Quantity kg/ton</th>
+                            <th>Gas Quantity liters</th>
                             <th>Gas Cost NGN</th>
                             <th>Purchase NGN</th>
                             <th>Union NGN</th>
@@ -147,7 +147,6 @@
                             <th>Tare Initial</th>
                             <th>Tare Final</th>
                             <th>Weight Difference</th>
-                            <th>Total Cost</th>
                             <th>Landing Cost</th>
                             <th>Landing NGN/KG</th>
                             <th>Action</th>
@@ -190,14 +189,14 @@
                             <div class="receipt-line"><strong>Route</strong><span>${window.POS.escapeHTML(`${record.from || "-"} to ${record.to || "-"}`)}</span></div>
                             <div class="receipt-line"><strong>Fuel Qty</strong><span>${window.POS.escapeHTML(record.fuelKg ?? "-")} KG</span></div>
                             <div class="receipt-line"><strong>Fuel Cost</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.fuelNaira || 0))}</span></div>
-                            <div class="receipt-line"><strong>Gas Qty</strong><span>${window.POS.escapeHTML(record.gasQuantity ?? "-")} kg/ton</span></div>
+                            <div class="receipt-line"><strong>Gas Qty</strong><span>${window.POS.escapeHTML(record.gasQuantity ?? "-")} liters</span></div>
                             <div class="receipt-line"><strong>Gas Cost</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.gasCost || 0))}</span></div>
                             <div class="receipt-line"><strong>Union</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.unionCost || 0))}</span></div>
                             <div class="receipt-line"><strong>Allowance</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.allowance || 0))}</span></div>
                             <div class="receipt-line"><strong>Extra Expense</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.impromptuExpense || 0))}</span></div>
                             ${record.impromptuReason ? `<div class="receipt-line"><strong>Reason</strong><span>${window.POS.escapeHTML(record.impromptuReason)}</span></div>` : ""}
                             <div class="receipt-line"><strong>Tare</strong><span>${window.POS.escapeHTML(record.tareInitial ?? "-")} / ${window.POS.escapeHTML(record.tareFinal ?? "-")} KG</span></div>
-                            <div class="receipt-total"><strong>Total Cost</strong><strong>${window.POS.escapeHTML(window.POS.formatMoney(record.totalCost || 0))}</strong></div>
+                            <div class="receipt-total"><strong>Landing Cost</strong><strong>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCost || record.totalCost || 0))}</strong></div>
                         </section>
                     `).join("") || `<p class="receipt-empty">No logistics records yet.</p>`}
                 `;
@@ -252,7 +251,7 @@
                 const totalField = document.getElementById("total-cost");
                 if (!totalField) return 0;
                 const total = ["fuel-naira", "gas-cost", "union-cost", "trip-allowance", "impromptu-expense"]
-                    .reduce((sum, id) => sum + Number(value(id) || 0), 0);
+                    .reduce((sum, id) => sum + Number(value(id) || 0), 0) / 30;
                 totalField.value = total.toFixed(2);
                 return total;
             }
@@ -296,12 +295,11 @@
                         <td>${window.POS.escapeHTML(record.tareInitial)}</td>
                         <td>${window.POS.escapeHTML(record.tareFinal)}</td>
                         <td>${window.POS.escapeHTML(record.weightDifference)}</td>
-                        <td>${window.POS.escapeHTML(window.POS.formatMoney(record.totalCost))}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCost))}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCostKg))}</td>
                         <td>${window.POS.isAdmin() ? `<button class="sheet-delete" type="button" data-index="${index}">Delete</button>` : "Input only"}</td>
                     </tr>
-                `).join("") || `<tr><td colspan="19" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
+                `).join("") || `<tr><td colspan="21" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
 
                 tripCount.textContent = `${records.length} trip${records.length === 1 ? "" : "s"}`;
             }

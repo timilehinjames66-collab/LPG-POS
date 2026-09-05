@@ -171,8 +171,7 @@
             const saveTripButton = document.getElementById("save-trip-button");
             const printLogisticsButton = document.getElementById("print-logistics");
 
-            function printLogisticsRecords() {
-                const records = readRecords();
+            function printLogisticsRecords(records = readRecords()) {
                 const existingReceipt = document.getElementById("logistics-print-receipt");
                 existingReceipt?.remove();
                 const receipt = document.createElement("main");
@@ -298,7 +297,10 @@
                         <td>${window.POS.escapeHTML(record.weightDifference)}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCost))}</td>
                         <td>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCostKg))}</td>
-                        <td>${window.POS.isAdmin() ? `<button class="sheet-delete" type="button" data-index="${index}">Delete</button>` : "Input only"}</td>
+                        <td>
+                            <button class="print-logistics-record" type="button" data-index="${index}">Print</button>
+                            ${window.POS.isAdmin() ? `<button class="sheet-delete" type="button" data-index="${index}">Delete</button>` : ""}
+                        </td>
                     </tr>
                 `).join("") || `<tr><td colspan="21" style="text-align:center; padding:30px;">No logistics records yet.</td></tr>`;
 
@@ -400,6 +402,14 @@
             });
 
             tableBody.addEventListener("click", event => {
+                const printButton = event.target.closest(".print-logistics-record");
+                if (printButton) {
+                    const records = readRecords();
+                    const record = records[Number(printButton.dataset.index)];
+                    if (record) printLogisticsRecords([record]);
+                    return;
+                }
+
                 const deleteButton = event.target.closest(".sheet-delete");
                 if (!deleteButton || !window.POS || !window.POS.isAdmin || !window.POS.isAdmin()) return;
                 const records = readRecords();

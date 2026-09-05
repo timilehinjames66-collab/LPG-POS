@@ -196,6 +196,7 @@
                             <div class="receipt-line"><strong>Extra Expense</strong><span>${window.POS.escapeHTML(window.POS.formatMoney(record.impromptuExpense || 0))}</span></div>
                             ${record.impromptuReason ? `<div class="receipt-line"><strong>Reason</strong><span>${window.POS.escapeHTML(record.impromptuReason)}</span></div>` : ""}
                             <div class="receipt-line"><strong>Tare</strong><span>${window.POS.escapeHTML(record.tareInitial ?? "-")} / ${window.POS.escapeHTML(record.tareFinal ?? "-")} KG</span></div>
+                            <div class="receipt-line"><strong>Weight Difference</strong><span>${window.POS.escapeHTML(record.weightDifference ?? "-")} KG</span></div>
                             <div class="receipt-total"><strong>Landing Cost</strong><strong>${window.POS.escapeHTML(window.POS.formatMoney(record.landingCost || record.totalCost || 0))}</strong></div>
                         </section>
                     `).join("") || `<p class="receipt-empty">No logistics records yet.</p>`}

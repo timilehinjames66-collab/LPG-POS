@@ -202,10 +202,19 @@
                 `;
                 document.body.appendChild(receipt);
                 document.body.classList.add("logistics-printing");
+                const fitReceiptToOnePage = () => {
+                    const availableHeight = (80 * 96) / 25.4 - 8;
+                    const contentHeight = receipt.scrollHeight;
+                    if (contentHeight > availableHeight) {
+                        receipt.style.zoom = String(availableHeight / contentHeight);
+                    }
+                };
+                window.addEventListener("beforeprint", fitReceiptToOnePage);
                 const cleanUp = () => {
                     document.body.classList.remove("logistics-printing");
                     receipt.remove();
                     window.removeEventListener("afterprint", cleanUp);
+                    window.removeEventListener("beforeprint", fitReceiptToOnePage);
                 };
                 window.addEventListener("afterprint", cleanUp);
                 setTimeout(() => window.print(), 100);

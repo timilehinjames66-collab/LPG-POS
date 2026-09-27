@@ -206,7 +206,7 @@
                 document.body.appendChild(receipt);
                 document.body.classList.add("logistics-printing");
                 const fitReceiptToOnePage = () => {
-                    const availableHeight = (77 * 96) / 25.4;
+                    const availableHeight = (57 * 96) / 25.4;
                     const contentHeight = receiptContent.scrollHeight;
                     const scale = Math.min(1, availableHeight / contentHeight);
                     receipt.style.setProperty("--logistics-print-scale", String(scale));

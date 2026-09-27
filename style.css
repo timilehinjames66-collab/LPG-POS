@@ -523,10 +523,6 @@ body.logistics-printing #logistics-print-receipt h1 {
     font-size: 12px;
 }
 
-body.logistics-printing .logistics-print-trip {
-    break-inside: avoid;
-}
-
 body.logistics-printing .receipt-rule {
     border-top: 1px dashed #555;
     margin: 2px 0;
@@ -569,16 +565,6 @@ body.logistics-printing .receipt-empty {
         left: auto;
         height: 80mm;
         overflow: hidden;
-        page-break-after: avoid;
-    }
-
-    body.logistics-printing .logistics-print-trip {
-        page-break-inside: avoid;
-        page-break-after: avoid;
-    }
-
-    body.logistics-printing #logistics-print-receipt {
-        page-break-after: avoid;
     }
 }
 

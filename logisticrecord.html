@@ -176,7 +176,9 @@
                 existingReceipt?.remove();
                 const receipt = document.createElement("main");
                 receipt.id = "logistics-print-receipt";
-                receipt.innerHTML = `
+                const receiptContent = document.createElement("div");
+                receiptContent.className = "logistics-print-content";
+                receiptContent.innerHTML = `
                     <h1>Logistics Record</h1>
                     ${records.map(record => `
                         <section class="logistics-print-trip">
@@ -200,21 +202,20 @@
                         </section>
                     `).join("") || `<p class="receipt-empty">No logistics records yet.</p>`}
                 `;
+                receipt.appendChild(receiptContent);
                 document.body.appendChild(receipt);
                 document.body.classList.add("logistics-printing");
                 const fitReceiptToOnePage = () => {
-                    const availableHeight = (80 * 96) / 25.4 - 8;
-                    const contentHeight = receipt.scrollHeight;
-                    if (contentHeight > availableHeight) {
-                        receipt.style.zoom = String(availableHeight / contentHeight);
-                    }
+                    const availableHeight = (77 * 96) / 25.4;
+                    const contentHeight = receiptContent.scrollHeight;
+                    const scale = Math.min(1, availableHeight / contentHeight);
+                    receipt.style.setProperty("--logistics-print-scale", String(scale));
                 };
-                window.addEventListener("beforeprint", fitReceiptToOnePage);
+                fitReceiptToOnePage();
                 const cleanUp = () => {
                     document.body.classList.remove("logistics-printing");
                     receipt.remove();
                     window.removeEventListener("afterprint", cleanUp);
-                    window.removeEventListener("beforeprint", fitReceiptToOnePage);
                 };
                 window.addEventListener("afterprint", cleanUp);
                 setTimeout(() => window.print(), 100);

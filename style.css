@@ -618,7 +618,7 @@ body.logistics-printing .receipt-empty {
     }
 
     @page pos-receipt {
-        size: 58mm 70mm;
+        size: 58mm 60mm;
         margin: 0;
     }
 

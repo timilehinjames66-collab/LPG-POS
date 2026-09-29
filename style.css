@@ -576,39 +576,40 @@ body.logistics-printing .receipt-empty {
 
     body.receipt-printing #pos-print-receipt {
         display: block;
+        page: pos-receipt;
         width: 58mm;
         max-width: 58mm;
         margin: 0 auto;
         padding: 1mm;
         color: #111;
-        font: 8px Arial, sans-serif;
-        line-height: 1;
+        font: 700 9px Arial, sans-serif;
+        line-height: 1.1;
     }
 
     body.receipt-printing #pos-print-receipt h1 {
         margin-bottom: 2px;
-        font-size: 12px;
+        font-size: 13px;
     }
 
     body.receipt-printing #pos-print-receipt .message {
-        margin-bottom: 2px;
+        margin-bottom: 3px;
     }
 
     body.receipt-printing #pos-print-receipt .rule {
-        margin: 2px 0;
+        margin: 3px 0;
     }
 
     body.receipt-printing #pos-print-receipt .line {
         gap: 3px;
-        padding: 1px 0;
+        padding: 1.5px 0;
     }
 
     body.receipt-printing #pos-print-receipt .total {
-        font-size: 10px;
+        font-size: 11px;
     }
 
     body.receipt-printing #pos-print-receipt .footer {
-        margin-top: 3px;
+        margin-top: 4px;
     }
 
     @page {
@@ -616,8 +617,14 @@ body.logistics-printing .receipt-empty {
         margin: 0;
     }
 
+    @page pos-receipt {
+        size: 58mm 70mm;
+        margin: 0;
+    }
+
     body {
         background: #fff;
+        font-weight: 700;
     }
 
     body:not(.receipt-printing) .header,

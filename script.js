@@ -520,13 +520,13 @@ function printReceipt(record, type) {
     document.body.classList.add("receipt-printing");
     const contentHeight = receiptContent.scrollHeight;
     const contentHeightMm = contentHeight * 25.4 / 96;
-    const pageHeightMm = Math.max(12, Math.min(30, contentHeightMm + 3));
+    const pageHeightMm = Math.max(12, Math.min(50, contentHeightMm + 3));
     const availableHeight = (pageHeightMm - 3) * 96 / 25.4;
     const scale = Math.min(1, availableHeight / contentHeight);
     receipt.style.height = `${pageHeightMm}mm`;
     receipt.style.setProperty("--pos-print-scale", String(scale));
     const pageStyle = document.createElement("style");
-    pageStyle.textContent = `@page pos-receipt { size: 42mm ${pageHeightMm}mm; margin: 0; }`;
+    pageStyle.textContent = `@page pos-receipt { size: 48mm ${pageHeightMm}mm; margin: 0; }`;
     document.head.appendChild(pageStyle);
     const cleanUp = () => {
         document.body.classList.remove("receipt-printing");

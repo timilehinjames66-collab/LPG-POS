@@ -495,7 +495,14 @@ body.receipt-printing #pos-print-receipt .total {
 }
 
 body.receipt-printing #pos-print-receipt .footer {
-    margin-top: 4px;
+    margin: 2px 0 0;
+    padding: 0;
+    border: 0;
+    color: #111;
+    text-align: center;
+    font-size: 8px;
+    line-height: 1.1;
+    background: transparent;
 }
 
 #pos-print-receipt h1 {
@@ -668,7 +675,7 @@ body.logistics-printing .receipt-empty {
     }
 
     body.receipt-printing #pos-print-receipt .footer {
-        margin-top: 4px;
+        margin-top: 2px;
     }
 
     @page {

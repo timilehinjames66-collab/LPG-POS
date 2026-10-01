@@ -496,7 +496,9 @@ function printReceipt(record, type) {
     existingReceipt?.remove();
     const receipt = document.createElement("main");
     receipt.id = "pos-print-receipt";
-    receipt.innerHTML = `
+    const receiptContent = document.createElement("div");
+    receiptContent.className = "pos-print-content";
+    receiptContent.innerHTML = `
                 <h1>${escapeHTML(businessName)}</h1>
                 ${settings.showPhone && settings.businessPhone ? `<p class="message">${escapeHTML(settings.businessPhone)}</p>` : ""}
                 ${settings.showAddress && settings.businessAddress ? `<p class="message">${escapeHTML(settings.businessAddress)}</p>` : ""}
@@ -513,8 +515,13 @@ function printReceipt(record, type) {
                 <div class="line total"><span>Total</span><span>${escapeHTML(formatMoney(record.total || 0))}</span></div>
                 <p class="footer">${escapeHTML(footer).replace(/\n/g, "<br>")}</p>
     `;
+    receipt.appendChild(receiptContent);
     document.body.appendChild(receipt);
     document.body.classList.add("receipt-printing");
+    const availableHeight = (27 * 96) / 25.4;
+    const contentHeight = receiptContent.scrollHeight;
+    const scale = Math.min(1, availableHeight / contentHeight);
+    receipt.style.setProperty("--pos-print-scale", String(scale));
     const cleanUp = () => {
         document.body.classList.remove("receipt-printing");
         receipt.remove();

@@ -450,6 +450,54 @@ tbody tr:hover {
     overflow-wrap: anywhere;
 }
 
+body.receipt-printing #pos-print-receipt {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -10000px;
+    width: 48mm;
+    max-width: 48mm;
+    height: 30mm;
+    margin: 0 auto;
+    padding: 1mm;
+    color: #111;
+    font: 700 9px Arial, sans-serif;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+    overflow: hidden;
+}
+
+body.receipt-printing .pos-print-content {
+    transform: scale(var(--pos-print-scale, 1));
+    transform-origin: top left;
+}
+
+body.receipt-printing #pos-print-receipt h1 {
+    margin-bottom: 2px;
+    font-size: 13px;
+}
+
+body.receipt-printing #pos-print-receipt .message {
+    margin-bottom: 3px;
+}
+
+body.receipt-printing #pos-print-receipt .rule {
+    margin: 3px 0;
+}
+
+body.receipt-printing #pos-print-receipt .line {
+    gap: 3px;
+    padding: 1.5px 0;
+}
+
+body.receipt-printing #pos-print-receipt .total {
+    font-size: 11px;
+}
+
+body.receipt-printing #pos-print-receipt .footer {
+    margin-top: 4px;
+}
+
 #pos-print-receipt h1 {
     margin: 0 0 5px;
     text-align: center;
@@ -502,7 +550,7 @@ body.logistics-printing #logistics-print-receipt {
     left: -10000px;
     width: 48mm;
     max-width: 48mm;
-    height: 40mm;
+    height: 30mm;
     margin: 0 auto;
     padding: 1mm;
     color: #111;
@@ -565,12 +613,12 @@ body.logistics-printing .receipt-empty {
         position: static;
         top: auto;
         left: auto;
-        height: 40mm;
+        height: 30mm;
         overflow: hidden;
     }
 
     @page logistics-receipt {
-        size: 48mm 40mm;
+        size: 48mm 30mm;
         margin: 0;
     }
 }
@@ -583,13 +631,18 @@ body.logistics-printing .receipt-empty {
     body.receipt-printing #pos-print-receipt {
         display: block;
         page: pos-receipt;
+        position: static;
+        top: auto;
+        left: auto;
         width: 48mm;
         max-width: 48mm;
+        height: 30mm;
         margin: 0 auto;
         padding: 1mm;
         color: #111;
         font: 700 9px Arial, sans-serif;
         line-height: 1.1;
+        overflow: hidden;
     }
 
     body.receipt-printing #pos-print-receipt h1 {
@@ -619,12 +672,12 @@ body.logistics-printing .receipt-empty {
     }
 
     @page {
-        size: 48mm 40mm;
+        size: 48mm 30mm;
         margin: 0;
     }
 
     @page pos-receipt {
-        size: 48mm 40mm;
+        size: 48mm 30mm;
         margin: 0;
     }
 

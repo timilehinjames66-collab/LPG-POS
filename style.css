@@ -502,7 +502,7 @@ body.logistics-printing #logistics-print-receipt {
     left: -10000px;
     width: 58mm;
     max-width: 58mm;
-    height: 60mm;
+    height: 40mm;
     margin: 0 auto;
     padding: 1mm;
     color: #111;
@@ -561,11 +561,17 @@ body.logistics-printing .receipt-empty {
     }
 
     body.logistics-printing #logistics-print-receipt {
+        page: logistics-receipt;
         position: static;
         top: auto;
         left: auto;
-        height: 60mm;
+        height: 40mm;
         overflow: hidden;
+    }
+
+    @page logistics-receipt {
+        size: 58mm 40mm;
+        margin: 0;
     }
 }
 

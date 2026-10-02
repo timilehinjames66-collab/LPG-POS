@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logistics Records - Mikel Gas</title>
-    <link rel="stylesheet" href="style.css?v=all-print-58x60-20261002">
+    <link rel="stylesheet" href="style.css?v=all-print-48x60-20261002">
 </head>
 
 <body class="logistics-page">
@@ -214,7 +214,7 @@
                     receipt.style.height = `${pageHeightMm}mm`;
                     receipt.style.setProperty("--logistics-print-scale", String(scale));
                     const pageStyle = document.createElement("style");
-                    pageStyle.textContent = `@page logistics-receipt { size: 58mm ${pageHeightMm}mm; margin: 0; }`;
+                    pageStyle.textContent = `@page logistics-receipt { size: 48mm ${pageHeightMm}mm; margin: 0; }`;
                     document.head.appendChild(pageStyle);
                     return pageStyle;
                 };

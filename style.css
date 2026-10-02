@@ -457,7 +457,7 @@ body.receipt-printing #pos-print-receipt {
     left: -10000px;
     width: 44mm;
     max-width: 44mm;
-    height: 50mm;
+    height: 40mm;
     margin: 0 auto;
     padding: 1mm;
     color: #111;
@@ -557,7 +557,7 @@ body.logistics-printing #logistics-print-receipt {
     left: -10000px;
     width: 44mm;
     max-width: 44mm;
-    height: 50mm;
+    height: 40mm;
     margin: 0 auto;
     padding: 1mm;
     color: #111;
@@ -620,12 +620,12 @@ body.logistics-printing .receipt-empty {
         position: static;
         top: auto;
         left: auto;
-        height: 50mm;
+        height: 40mm;
         overflow: hidden;
     }
 
     @page logistics-receipt {
-        size: 44mm 50mm;
+        size: 44mm 40mm;
         margin: 0;
     }
 }
@@ -643,7 +643,7 @@ body.logistics-printing .receipt-empty {
         left: auto;
         width: 44mm;
         max-width: 44mm;
-        height: 50mm;
+        height: 40mm;
         margin: 0 auto;
         padding: 1mm;
         color: #111;
@@ -679,12 +679,12 @@ body.logistics-printing .receipt-empty {
     }
 
     @page {
-        size: 44mm 50mm;
+        size: 44mm 40mm;
         margin: 0;
     }
 
     @page pos-receipt {
-        size: 44mm 50mm;
+        size: 44mm 40mm;
         margin: 0;
     }
 

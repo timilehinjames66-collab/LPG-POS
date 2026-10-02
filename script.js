@@ -520,7 +520,7 @@ function printReceipt(record, type) {
     document.body.classList.add("receipt-printing");
     const contentHeight = receiptContent.scrollHeight;
     const contentHeightMm = contentHeight * 25.4 / 96;
-    const pageHeightMm = Math.max(12, Math.min(40, contentHeightMm + 3));
+    const pageHeightMm = Math.max(12, Math.min(30, contentHeightMm + 3));
     const availableHeight = (pageHeightMm - 3) * 96 / 25.4;
     const scale = Math.min(1, availableHeight / contentHeight);
     receipt.style.height = `${pageHeightMm}mm`;

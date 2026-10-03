@@ -214,7 +214,7 @@
                     receipt.style.height = `${pageHeightMm}mm`;
                     receipt.style.setProperty("--logistics-print-scale", String(scale));
                     const pageStyle = document.createElement("style");
-                    pageStyle.textContent = `@page logistics-receipt { size: ${pageHeightMm}mm 72mm; margin: 0; }`;
+                    pageStyle.textContent = `@page logistics-receipt { size: 72mm ${pageHeightMm}mm; margin: 0; }`;
                     document.head.appendChild(pageStyle);
                     return pageStyle;
                 };

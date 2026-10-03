@@ -1,4 +1,4 @@
-const CACHE_NAME = "lpg-pos-v26";
+const CACHE_NAME = "lpg-pos-v27";
 const APP_FILES = [
     "./",
     "./index.html",

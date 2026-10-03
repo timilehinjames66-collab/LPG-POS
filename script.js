@@ -485,9 +485,8 @@ function printReceipt(record, type) {
     const settings = getSettings();
     const rawBusinessName = settings.businessName?.trim();
     const normalizedBusinessName = rawBusinessName?.toLowerCase().replace(/\s+/g, "");
-    const businessName = !rawBusinessName || normalizedBusinessName === "mikelgas" || normalizedBusinessName === "mikelgas"
-        ? "mikelgas"
-        : rawBusinessName;
+    const isLegacyBusinessName = !rawBusinessName || normalizedBusinessName === "mikelgas" || normalizedBusinessName === "mikelgaspos" || normalizedBusinessName === "gastrade" || /^gas\s*trade$/i.test(rawBusinessName);
+    const businessName = isLegacyBusinessName ? "mikelgas" : rawBusinessName;
     const isSale = type === "sales";
     const reference = isSale ? record.transactionId : record.invoiceId;
     const description = isSale ? record.description : record.customer;
@@ -1187,11 +1186,11 @@ function initializeStorage() {
 
         saveSettings({
 
-            businessName: "mikelgas",
+            businessName: "MIKELGAS",
 
-            businessPhone: "",
+            businessPhone: "+2348056863190",
 
-            businessEmail: "",
+            businessEmail: "mikelgas.statements@gmail.com",
 
             businessAddress:
                 "Ogun State, Nigeria",
@@ -1209,7 +1208,7 @@ function initializeStorage() {
     const currentSettings = getSettings();
     const currentBusinessName = currentSettings.businessName?.trim();
     const normalizedCurrentBusinessName = currentBusinessName?.toLowerCase().replace(/\s+/g, "");
-    if (!currentBusinessName || normalizedCurrentBusinessName === "mikelgas" || normalizedCurrentBusinessName === "mikelgaspos" || normalizedCurrentBusinessName === "gastrade") {
+    if (!currentBusinessName || normalizedCurrentBusinessName === "mikelgas" || normalizedCurrentBusinessName === "mikelgaspos" || normalizedCurrentBusinessName === "gastrade" || /^gas\s*trade$/i.test(currentBusinessName)) {
         currentSettings.businessName = "mikelgas";
         localStorage.setItem(STORAGE.settings, JSON.stringify(currentSettings));
     }

@@ -486,8 +486,9 @@ body.receipt-printing #pos-print-receipt .rule {
 }
 
 body.receipt-printing #pos-print-receipt .line {
-    gap: 3px;
-    padding: 1.5px 0;
+    gap: 2px;
+    padding: 0.5px 0;
+    line-height: 1.05;
 }
 
 body.receipt-printing #pos-print-receipt .total {
@@ -526,9 +527,9 @@ body.receipt-printing #pos-print-receipt .footer {
 #pos-print-receipt .line {
     display: flex;
     justify-content: space-between;
-    gap: 6px;
-    padding: 2px 0;
-    line-height: 1.1;
+    gap: 4px;
+    padding: 1px 0;
+    line-height: 1.05;
 }
 
 #pos-print-receipt .label {
@@ -588,8 +589,8 @@ body.logistics-printing .receipt-line,
 body.logistics-printing .receipt-total {
     display: flex;
     justify-content: space-between;
-    gap: 3px;
-    padding: 1px 0;
+    gap: 2px;
+    padding: 0.5px 0;
     line-height: 1;
 }
 

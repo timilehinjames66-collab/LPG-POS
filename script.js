@@ -484,7 +484,7 @@ function getSettings() {
 function printReceipt(record, type) {
     const settings = getSettings();
     const businessName = settings.businessName?.trim() === "mikel gas" || !settings.businessName?.trim()
-        ? "Gas Trade"
+        ? "mikelgas"
         : settings.businessName;
     const isSale = type === "sales";
     const reference = isSale ? record.transactionId : record.invoiceId;

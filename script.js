@@ -499,6 +499,7 @@ function printReceipt(record, type) {
     receiptContent.innerHTML = `
                 <h1>${escapeHTML(businessName)}</h1>
                 ${settings.showPhone && settings.businessPhone ? `<p class="message">${escapeHTML(settings.businessPhone)}</p>` : ""}
+                ${settings.businessEmail ? `<p class="message">${escapeHTML(settings.businessEmail)}</p>` : ""}
                 ${settings.showAddress && settings.businessAddress ? `<p class="message">${escapeHTML(settings.businessAddress)}</p>` : ""}
                 <p class="message">${escapeHTML(header).replace(/\n/g, "<br>")}</p>
                 <div class="rule"></div>
@@ -524,7 +525,7 @@ function printReceipt(record, type) {
     receipt.style.height = `${pageHeightMm}mm`;
     receipt.style.setProperty("--pos-print-scale", String(scale));
     const pageStyle = document.createElement("style");
-    pageStyle.textContent = `@page pos-receipt { size: 80mm ${pageHeightMm}mm; margin: 0; }`;
+    pageStyle.textContent = `@page pos-receipt { size: 58mm ${pageHeightMm}mm; margin: 0; }`;
     document.head.appendChild(pageStyle);
     const cleanUp = () => {
         document.body.classList.remove("receipt-printing");

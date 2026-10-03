@@ -525,8 +525,9 @@ body.receipt-printing #pos-print-receipt .footer {
 }
 
 #pos-print-receipt .line {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 36% minmax(0, 1fr);
+    justify-content: start;
     gap: 4px;
     padding: 1px 0;
     line-height: 1.05;

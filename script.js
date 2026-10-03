@@ -528,7 +528,7 @@ function printReceipt(record, type) {
     receipt.style.height = `${pageHeightMm}mm`;
     receipt.style.setProperty("--pos-print-scale", String(scale));
     const pageStyle = document.createElement("style");
-    pageStyle.textContent = `@page pos-receipt { size: 72mm ${pageHeightMm}mm; margin: 0; }`;
+    pageStyle.textContent = `@page pos-receipt { size: 58mm ${pageHeightMm}mm; margin: 0; }`;
     document.head.appendChild(pageStyle);
     const cleanUp = () => {
         document.body.classList.remove("receipt-printing");

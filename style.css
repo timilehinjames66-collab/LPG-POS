@@ -457,7 +457,7 @@ body.receipt-printing #pos-print-receipt {
     left: -10000px;
     width: 72mm;
     max-width: 72mm;
-    height: 80mm;
+    height: 85mm;
     margin: 0 auto;
     padding: 1mm;
     color: #111;
@@ -479,10 +479,6 @@ body.receipt-printing #pos-print-receipt h1 {
 
 body.receipt-printing #pos-print-receipt .message {
     margin-bottom: 3px;
-}
-
-body.receipt-printing #pos-print-receipt .rule {
-    margin: 3px 0;
 }
 
 body.receipt-printing #pos-print-receipt .line {
@@ -517,11 +513,6 @@ body.receipt-printing #pos-print-receipt .footer {
     text-align: center;
     line-height: 1.1;
     white-space: normal;
-}
-
-#pos-print-receipt .rule {
-    border-top: 1px dashed #555;
-    margin: 5px 0;
 }
 
 #pos-print-receipt .line {
@@ -645,7 +636,7 @@ body.logistics-printing .receipt-empty {
         left: auto;
         width: 72mm;
         max-width: 72mm;
-        height: 80mm;
+        height: 85mm;
         margin: 0 auto;
         padding: 1mm;
         color: #111;
@@ -661,10 +652,6 @@ body.logistics-printing .receipt-empty {
 
     body.receipt-printing #pos-print-receipt .message {
         margin-bottom: 3px;
-    }
-
-    body.receipt-printing #pos-print-receipt .rule {
-        margin: 3px 0;
     }
 
     body.receipt-printing #pos-print-receipt .line {
@@ -686,7 +673,7 @@ body.logistics-printing .receipt-empty {
     }
 
     @page pos-receipt {
-        size: 72mm 80mm;
+        size: 72mm 85mm;
         margin: 0;
     }
 

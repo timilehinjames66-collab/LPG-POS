@@ -502,7 +502,6 @@ function printReceipt(record, type) {
                 ${settings.businessEmail ? `<p class="message">${escapeHTML(settings.businessEmail)}</p>` : ""}
                 ${settings.showAddress && settings.businessAddress ? `<p class="message">${escapeHTML(settings.businessAddress)}</p>` : ""}
                 <p class="message">${escapeHTML(header).replace(/\n/g, "<br>")}</p>
-                <div class="rule"></div>
                 <div class="line"><span class="label">${isSale ? "Transaction" : "Invoice"}</span><span>${escapeHTML(reference || "-")}</span></div>
                 <div class="line"><span class="label">${isSale ? "Description" : "Customer"}</span><span>${escapeHTML(description || "-")}</span></div>
                 ${isSale ? `<div class="line"><span class="label">Quantity</span><span>${escapeHTML(record.quantity || "-")}</span></div>` : ""}
@@ -510,7 +509,6 @@ function printReceipt(record, type) {
                 ${isSale ? `<div class="line"><span class="label">Operator</span><span>${escapeHTML(record.operator || "-")}</span></div>` : ""}
                 <div class="line"><span class="label">Payment</span><span>${escapeHTML(record.payment || "-")}</span></div>
                 <div class="line"><span class="label">Date</span><span>${escapeHTML(date ? formatDate(date) : "-")}</span></div>
-                <div class="rule"></div>
                 <div class="line total"><span>Total Price</span><span>${escapeHTML(formatMoney(record.total || 0))}</span></div>
                 <p class="footer">${escapeHTML(footer).replace(/\n/g, "<br>")}</p>
     `;
@@ -520,14 +518,11 @@ function printReceipt(record, type) {
         line.style.padding = "0.5px 0";
         line.style.lineHeight = "1.05";
     });
-    receiptContent.querySelectorAll(".rule").forEach(rule => {
-        rule.style.margin = "2px 0";
-    });
     document.body.appendChild(receipt);
     document.body.classList.add("receipt-printing");
     const contentHeight = receiptContent.scrollHeight;
     const contentHeightMm = contentHeight * 25.4 / 96;
-    const pageHeightMm = Math.max(12, Math.min(80, contentHeightMm + 3));
+    const pageHeightMm = Math.max(12, Math.min(85, contentHeightMm + 8));
     const availableHeight = (pageHeightMm - 3) * 96 / 25.4;
     const scale = Math.min(1, availableHeight / contentHeight);
     receipt.style.height = `${pageHeightMm}mm`;

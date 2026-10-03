@@ -515,6 +515,14 @@ function printReceipt(record, type) {
                 <p class="footer">${escapeHTML(footer).replace(/\n/g, "<br>")}</p>
     `;
     receipt.appendChild(receiptContent);
+    receiptContent.querySelectorAll(".line").forEach(line => {
+        line.style.gap = "2px";
+        line.style.padding = "0.5px 0";
+        line.style.lineHeight = "1.05";
+    });
+    receiptContent.querySelectorAll(".rule").forEach(rule => {
+        rule.style.margin = "2px 0";
+    });
     document.body.appendChild(receipt);
     document.body.classList.add("receipt-printing");
     const contentHeight = receiptContent.scrollHeight;

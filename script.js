@@ -1187,7 +1187,7 @@ function initializeStorage() {
 
         saveSettings({
 
-            businessName: "Gas Trade",
+            businessName: "mikelgas",
 
             businessPhone: "",
 
@@ -1207,8 +1207,10 @@ function initializeStorage() {
     }
 
     const currentSettings = getSettings();
-    if (currentSettings.businessName?.trim() === "mikel gas" || currentSettings.businessName?.trim() === "mikelgas pos") {
-        currentSettings.businessName = "Gas Trade";
+    const currentBusinessName = currentSettings.businessName?.trim();
+    const normalizedCurrentBusinessName = currentBusinessName?.toLowerCase().replace(/\s+/g, "");
+    if (!currentBusinessName || normalizedCurrentBusinessName === "mikelgas" || normalizedCurrentBusinessName === "mikelgaspos" || normalizedCurrentBusinessName === "gastrade") {
+        currentSettings.businessName = "mikelgas";
         localStorage.setItem(STORAGE.settings, JSON.stringify(currentSettings));
     }
 

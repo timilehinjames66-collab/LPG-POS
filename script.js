@@ -483,10 +483,7 @@ function getSettings() {
 
 function printReceipt(record, type) {
     const settings = getSettings();
-    const rawBusinessName = settings.businessName?.trim();
-    const normalizedBusinessName = rawBusinessName?.toLowerCase().replace(/\s+/g, "");
-    const isLegacyBusinessName = !rawBusinessName || normalizedBusinessName === "mikelgas" || normalizedBusinessName === "mikelgaspos" || normalizedBusinessName === "gastrade" || /^gas\s*trade$/i.test(rawBusinessName);
-    const businessName = isLegacyBusinessName ? "mikelgas" : rawBusinessName;
+    const businessName = "mikelgas";
     const isSale = type === "sales";
     const reference = isSale ? record.transactionId : record.invoiceId;
     const description = isSale ? record.description : record.customer;

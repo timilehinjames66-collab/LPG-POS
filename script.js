@@ -483,7 +483,7 @@ function getSettings() {
 
 function printReceipt(record, type) {
     const settings = getSettings();
-    const businessName = "mikelgas";
+    const businessName = "Mikel Gas";
     const isSale = type === "sales";
     const reference = isSale ? record.transactionId : record.invoiceId;
     const description = isSale ? record.description : record.customer;

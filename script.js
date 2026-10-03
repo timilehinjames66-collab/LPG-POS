@@ -483,9 +483,11 @@ function getSettings() {
 
 function printReceipt(record, type) {
     const settings = getSettings();
-    const businessName = settings.businessName?.trim() === "mikel gas" || !settings.businessName?.trim()
+    const rawBusinessName = settings.businessName?.trim();
+    const normalizedBusinessName = rawBusinessName?.toLowerCase().replace(/\s+/g, "");
+    const businessName = !rawBusinessName || normalizedBusinessName === "mikelgas" || normalizedBusinessName === "mikelgas"
         ? "mikelgas"
-        : settings.businessName;
+        : rawBusinessName;
     const isSale = type === "sales";
     const reference = isSale ? record.transactionId : record.invoiceId;
     const description = isSale ? record.description : record.customer;
@@ -512,7 +514,7 @@ function printReceipt(record, type) {
                 <div class="line"><span class="label">Payment</span><span>${escapeHTML(record.payment || "-")}</span></div>
                 <div class="line"><span class="label">Date</span><span>${escapeHTML(date ? formatDate(date) : "-")}</span></div>
                 <div class="rule"></div>
-                <div class="line total"><span>Total</span><span>${escapeHTML(formatMoney(record.total || 0))}</span></div>
+                <div class="line total"><span>Total Price</span><span>${escapeHTML(formatMoney(record.total || 0))}</span></div>
                 <p class="footer">${escapeHTML(footer).replace(/\n/g, "<br>")}</p>
     `;
     receipt.appendChild(receiptContent);

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logistics Records - Mikel Gas</title>
-    <link rel="stylesheet" href="style.css?v=compact-company-receipt-20261004">
+    <link rel="stylesheet" href="style.css?v=customer-company-receipt-20261004">
 </head>
 
 <body class="logistics-page">
@@ -182,7 +182,7 @@
                 const businessName = settings.businessName || "Mikel Gas";
                 receiptContent.innerHTML = `
                     <h1>${window.POS.escapeHTML(businessName)} Logistics</h1>
-                    ${settings.showPhone && settings.businessPhone ? `<p class="contact"><strong>Phone:</strong> ${window.POS.escapeHTML(settings.businessPhone)}</p>` : ""}
+                    ${settings.businessPhone ? `<p class="contact"><strong>Phone:</strong> ${window.POS.escapeHTML(settings.businessPhone)}</p>` : ""}
                     ${settings.businessEmail ? `<p class="contact"><strong>Email:</strong> ${window.POS.escapeHTML(settings.businessEmail)}</p>` : ""}
                     <p class="contact">Logistics Record</p>
                     ${records.map(record => `

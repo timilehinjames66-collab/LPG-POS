@@ -483,7 +483,7 @@ body.receipt-printing #pos-print-receipt h1 {
 }
 
 body.receipt-printing #pos-print-receipt .message {
-    margin-bottom: 1px;
+    margin-bottom: 2px;
 }
 
 body.receipt-printing #pos-print-receipt .line {
@@ -514,14 +514,14 @@ body.receipt-printing #pos-print-receipt .footer {
 }
 
 #pos-print-receipt .message {
-    margin: 0 0 2px;
+    margin: 0 0 3px;
     text-align: center;
     line-height: 1.1;
     white-space: normal;
 }
 
 #pos-print-receipt .contact {
-    margin-bottom: 1px;
+    margin-bottom: 2px;
     font-size: 8px;
 }
 
@@ -529,8 +529,8 @@ body.receipt-printing #pos-print-receipt .footer {
     display: grid;
     grid-template-columns: 12mm minmax(0, 1fr);
     justify-content: start;
-    gap: 2px;
-    padding: 0.5px 0;
+    gap: 3px;
+    padding: 1px 0;
     line-height: 1;
 }
 
@@ -593,7 +593,7 @@ body.logistics-printing #logistics-print-receipt h1 {
 }
 
 body.logistics-printing #logistics-print-receipt .contact {
-    margin-bottom: 1px;
+    margin-bottom: 2px;
     text-align: center;
     font-size: 8px;
     overflow-wrap: anywhere;
@@ -603,8 +603,8 @@ body.logistics-printing .receipt-line,
 body.logistics-printing .receipt-total {
     display: grid;
     grid-template-columns: 25mm minmax(0, 1fr);
-    gap: 2px;
-    padding: 0.5px 0;
+    gap: 3px;
+    padding: 1px 0;
     line-height: 1;
 }
 
@@ -675,12 +675,12 @@ body.logistics-printing .receipt-empty {
     }
 
     body.receipt-printing #pos-print-receipt .message {
-        margin-bottom: 1px;
+        margin-bottom: 2px;
     }
 
     body.receipt-printing #pos-print-receipt .line {
-        gap: 2px;
-        padding: 0.5px 0;
+        gap: 3px;
+        padding: 1px 0;
     }
 
     body.receipt-printing #pos-print-receipt .total {

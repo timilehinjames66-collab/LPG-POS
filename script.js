@@ -498,12 +498,13 @@ function printReceipt(record, type) {
     receiptContent.className = "pos-print-content";
     receiptContent.innerHTML = `
                 <h1>${escapeHTML(businessName)}</h1>
-                ${settings.showPhone && settings.businessPhone ? `<p class="message contact"><strong>Phone:</strong> ${escapeHTML(settings.businessPhone)}</p>` : ""}
+                ${settings.businessPhone ? `<p class="message contact"><strong>Phone:</strong> ${escapeHTML(settings.businessPhone)}</p>` : ""}
                 ${settings.businessEmail ? `<p class="message contact"><strong>Email:</strong> ${escapeHTML(settings.businessEmail)}</p>` : ""}
                 ${settings.showAddress && settings.businessAddress ? `<p class="message">${escapeHTML(settings.businessAddress)}</p>` : ""}
                 <p class="message">${escapeHTML(header).replace(/\n/g, "<br>")}</p>
                 <div class="line"><span class="label">${isSale ? "Transaction" : "Invoice"}</span><span>${escapeHTML(reference || "-")}</span></div>
                 <div class="line"><span class="label">${isSale ? "Description" : "Customer"}</span><span>${escapeHTML(description || "-")}</span></div>
+                ${isSale ? `<div class="line"><span class="label">Customer</span><span>${escapeHTML(record.customer || "Walk-in customer")}</span></div>` : ""}
                 ${isSale ? `<div class="line"><span class="label">Quantity</span><span>${escapeHTML(record.quantity || "-")}</span></div>` : ""}
                 ${isSale ? `<div class="line"><span class="label">Till</span><span>${escapeHTML(record.till || "-")}</span></div>` : ""}
                 ${isSale ? `<div class="line"><span class="label">Operator</span><span>${escapeHTML(record.operator || "-")}</span></div>` : ""}
@@ -515,7 +516,7 @@ function printReceipt(record, type) {
     receipt.appendChild(receiptContent);
     receiptContent.querySelectorAll(".line").forEach(line => {
         line.style.gap = "2px";
-        line.style.padding = "0.5px 0";
+        line.style.padding = "1px 0";
         line.style.lineHeight = "1.05";
     });
     document.body.appendChild(receipt);

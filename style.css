@@ -468,6 +468,11 @@ body.receipt-printing #pos-print-receipt {
 }
 
 body.receipt-printing .pos-print-content {
+    width: 100%;
+    padding: 2mm;
+    border: 1px solid #333;
+    border-radius: 2mm;
+    box-sizing: border-box;
     transform: scale(var(--pos-print-scale, 1));
     transform-origin: top left;
 }
@@ -572,6 +577,11 @@ body.logistics-printing #logistics-print-receipt {
 }
 
 body.logistics-printing .logistics-print-content {
+    width: 100%;
+    padding: 2mm;
+    border: 1px solid #333;
+    border-radius: 2mm;
+    box-sizing: border-box;
     transform: scale(var(--logistics-print-scale, 1));
     transform-origin: top left;
 }
@@ -582,26 +592,30 @@ body.logistics-printing #logistics-print-receipt h1 {
     font-size: 12px;
 }
 
-body.logistics-printing .receipt-rule {
-    border-top: 1px dashed #555;
-    margin: 2px 0;
+body.logistics-printing #logistics-print-receipt .contact {
+    margin-bottom: 1px;
+    text-align: center;
+    font-size: 8px;
+    overflow-wrap: anywhere;
 }
 
 body.logistics-printing .receipt-line,
 body.logistics-printing .receipt-total {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 25mm minmax(0, 1fr);
     gap: 2px;
     padding: 0.5px 0;
     line-height: 1;
 }
 
-body.logistics-printing .receipt-line strong:first-child {
-    flex: 0 0 auto;
-}
-
 body.logistics-printing .receipt-line span {
     text-align: right;
+}
+
+body.logistics-printing .logistics-print-trip + .logistics-print-trip {
+    margin-top: 2mm;
+    padding-top: 1mm;
+    border-top: 1px solid #999;
 }
 
 body.logistics-printing .receipt-total {

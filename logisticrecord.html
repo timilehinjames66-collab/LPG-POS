@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logistics Records - Mikel Gas</title>
-    <link rel="stylesheet" href="style.css?v=all-print-80x100-20261003">
+    <link rel="stylesheet" href="style.css?v=company-receipt-20261004">
 </head>
 
 <body class="logistics-page">
@@ -178,11 +178,15 @@
                 receipt.id = "logistics-print-receipt";
                 const receiptContent = document.createElement("div");
                 receiptContent.className = "logistics-print-content";
+                const settings = window.POS.getSettings();
+                const businessName = settings.businessName || "Mikel Gas";
                 receiptContent.innerHTML = `
-                    <h1>Logistics Record</h1>
+                    <h1>${window.POS.escapeHTML(businessName)} Logistics</h1>
+                    ${settings.showPhone && settings.businessPhone ? `<p class="contact"><strong>Phone:</strong> ${window.POS.escapeHTML(settings.businessPhone)}</p>` : ""}
+                    ${settings.businessEmail ? `<p class="contact"><strong>Email:</strong> ${window.POS.escapeHTML(settings.businessEmail)}</p>` : ""}
+                    <p class="contact">Logistics Record</p>
                     ${records.map(record => `
                         <section class="logistics-print-trip">
-                            <div class="receipt-rule"></div>
                             <div class="receipt-line"><strong>Depo</strong><span>${window.POS.escapeHTML(record.depot || "-")}</span></div>
                             <div class="receipt-line"><strong>Date</strong><span>${window.POS.escapeHTML(record.date || "-")}</span></div>
                             <div class="receipt-line"><strong>Driver</strong><span>${window.POS.escapeHTML(record.driver || "-")}</span></div>

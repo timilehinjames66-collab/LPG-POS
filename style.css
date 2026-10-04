@@ -515,9 +515,14 @@ body.receipt-printing #pos-print-receipt .footer {
     white-space: normal;
 }
 
+#pos-print-receipt .contact {
+    margin-bottom: 1px;
+    font-size: 8px;
+}
+
 #pos-print-receipt .line {
     display: grid;
-    grid-template-columns: 14mm minmax(0, 1fr);
+    grid-template-columns: 12mm minmax(0, 1fr);
     justify-content: start;
     gap: 4px;
     padding: 1px 0;

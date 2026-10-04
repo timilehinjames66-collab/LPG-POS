@@ -498,8 +498,8 @@ function printReceipt(record, type) {
     receiptContent.className = "pos-print-content";
     receiptContent.innerHTML = `
                 <h1>${escapeHTML(businessName)}</h1>
-                ${settings.showPhone && settings.businessPhone ? `<p class="message">${escapeHTML(settings.businessPhone)}</p>` : ""}
-                ${settings.businessEmail ? `<p class="message">${escapeHTML(settings.businessEmail)}</p>` : ""}
+                ${settings.showPhone && settings.businessPhone ? `<p class="message contact"><strong>Phone:</strong> ${escapeHTML(settings.businessPhone)}</p>` : ""}
+                ${settings.businessEmail ? `<p class="message contact"><strong>Email:</strong> ${escapeHTML(settings.businessEmail)}</p>` : ""}
                 ${settings.showAddress && settings.businessAddress ? `<p class="message">${escapeHTML(settings.businessAddress)}</p>` : ""}
                 <p class="message">${escapeHTML(header).replace(/\n/g, "<br>")}</p>
                 <div class="line"><span class="label">${isSale ? "Transaction" : "Invoice"}</span><span>${escapeHTML(reference || "-")}</span></div>

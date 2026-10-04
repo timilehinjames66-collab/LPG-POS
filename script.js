@@ -516,7 +516,7 @@ function printReceipt(record, type) {
     receipt.appendChild(receiptContent);
     receiptContent.querySelectorAll(".line").forEach(line => {
         line.style.gap = "2px";
-        line.style.padding = "1px 0";
+        line.style.padding = "2px 0";
         line.style.lineHeight = "1.05";
     });
     document.body.appendChild(receipt);

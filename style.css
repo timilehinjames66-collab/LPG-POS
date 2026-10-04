@@ -517,11 +517,16 @@ body.receipt-printing #pos-print-receipt .footer {
 
 #pos-print-receipt .line {
     display: grid;
-    grid-template-columns: 36% minmax(0, 1fr);
+    grid-template-columns: 14mm minmax(0, 1fr);
     justify-content: start;
     gap: 4px;
     padding: 1px 0;
     line-height: 1.05;
+}
+
+#pos-print-receipt .line > :last-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 #pos-print-receipt .label {

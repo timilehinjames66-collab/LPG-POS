@@ -516,14 +516,14 @@ function printReceipt(record, type) {
     receipt.appendChild(receiptContent);
     receiptContent.querySelectorAll(".line").forEach(line => {
         line.style.gap = "2px";
-        line.style.padding = "2px 0";
+        line.style.padding = "3px 0";
         line.style.lineHeight = "1.05";
     });
     document.body.appendChild(receipt);
     document.body.classList.add("receipt-printing");
     const contentHeight = receiptContent.scrollHeight;
     const contentHeightMm = contentHeight * 25.4 / 96;
-    const pageHeightMm = Math.max(12, Math.min(85, contentHeightMm + 8));
+    const pageHeightMm = Math.max(12, Math.min(100, contentHeightMm + 8));
     const availableHeight = (pageHeightMm - 3) * 96 / 25.4;
     const scale = Math.min(1, availableHeight / contentHeight);
     receipt.style.height = `${pageHeightMm}mm`;
